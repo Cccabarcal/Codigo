@@ -290,7 +290,7 @@ ps aux | grep -E "server|python3" | grep -v grep
 ```
 ubuntu  1234  ./server 8080 server.log
 ubuntu  1235  python3 auth_service.py
-ubuntu  1236  python3 sensor_client.py 54.242.32.222 8080
+ubuntu  1236  python3 sensor_client.py localhost 8080
 ubuntu  1237  python3 web_interface.py
 ```
 
@@ -406,7 +406,7 @@ pkill -f "server\|python3"
 # Volver a ejecutar (desde paso 5)
 ./server 8080 server.log &
 python3 auth_service.py &
-python3 sensor_client.py 54.242.32.222 8080 &
+python3 sensor_client.py localhost 8080 &
 python3 web_interface.py &
 ```
 

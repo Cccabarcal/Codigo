@@ -154,7 +154,7 @@ Write-Host "   cd Codigo" -ForegroundColor Gray
 Write-Host "   bash build.sh" -ForegroundColor Gray
 Write-Host "   ./server 8080 server.log &" -ForegroundColor Gray
 Write-Host "   python3 auth_service.py &" -ForegroundColor Gray
-Write-Host "   python3 sensor_client.py 54.242.32.222 8080 &" -ForegroundColor Gray
+Write-Host "   python3 sensor_client.py localhost 8080 &" -ForegroundColor Gray
 Write-Host "   python3 web_interface.py" -ForegroundColor Gray
 Write-Host ""
 Write-Host "   Acceder a: http://54.242.32.222:5000" -ForegroundColor $Success

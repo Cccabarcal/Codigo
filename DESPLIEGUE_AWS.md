@@ -285,7 +285,7 @@ python3 auth_service.py
 ### Terminal 3: Sensores
 
 ```bash
-python3 sensor_client.py 54.242.32.222 8080
+python3 sensor_client.py localhost 8080
 # Debería conectarse y empezar a enviar mediciones
 ```
 

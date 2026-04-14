@@ -93,7 +93,7 @@ cd Codigo
 ```bash
 bash build.sh
 ```
-
+cd /home/ec2-user/iot-project/Codigo
 Debería mostrar:
 ```
 ✓ Compilación exitosa
@@ -113,7 +113,7 @@ python3 auth_service.py
 
 **Terminal 3:**
 ```bash
-python3 sensor_client.py 54.242.32.222 8080
+python3 sensor_client.py localhost 8080
 ```
 
 **Terminal 4:**
@@ -126,6 +126,26 @@ python3 web_interface.py
 netstat -tuln | grep -E "5000|8080|9000"
 # Debería mostrar 3 ports LISTEN
 ```
+
+
+# Ve al directorio
+cd /home/ec2-user/iot-project/Codigo
+
+# Ejecuta TODOS en background (con &)
+./server 8080 server.log &
+sleep 2
+
+python3 auth_service.py &
+sleep 2
+
+python3 sensor_client.py localhost 8080 &
+sleep 2
+
+python3 web_interface.py &
+sleep 2
+
+# Verifica que los 3 puertos escuchan
+netstat -tuln | grep -E "5000|8080|9000"
 
 **Tiempo esperado:** 5-10 minutos
 
