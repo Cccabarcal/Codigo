@@ -22,6 +22,14 @@ public:
     // Inicializa el logger con el archivo de salida
     static bool init(const std::string& filename) {
         std::lock_guard<std::mutex> lock(mtx_);
+        
+        // Si el filename es /dev/stdout, no abrir archivo (usar stdout)
+        if (filename == "/dev/stdout" || filename == "stdout") {
+            initialized_ = true;
+            log("SYSTEM", "0.0.0.0", 0, "Servidor iniciado. Log: stdout");
+            return true;
+        }
+        
         file_.open(filename, std::ios::app);
         if (!file_.is_open()) {
             std::cerr << "[LOGGER] No se pudo abrir: " << filename << std::endl;
@@ -74,6 +82,7 @@ public:
  
     static void close() {
         std::lock_guard<std::mutex> lock(mtx_);
+        // Solo cerrar si es un archivo real (no stdout)
         if (file_.is_open()) file_.close();
     }
  

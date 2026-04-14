@@ -22,9 +22,9 @@ app.secret_key = "iot_system_secret_key_2026"
 
 WEB_PORT = 5000
 WEB_HOST = "0.0.0.0"
-IOT_SERVER_HOST = "localhost"
+IOT_SERVER_HOST = "54.242.32.222"
 IOT_SERVER_PORT = 8080
-AUTH_SERVER_HOST = "localhost"
+AUTH_SERVER_HOST = "54.242.32.222"
 AUTH_SERVER_PORT = 9000
 BUFFER_SIZE = 1024
 

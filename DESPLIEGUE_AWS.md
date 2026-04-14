@@ -285,7 +285,7 @@ python3 auth_service.py
 ### Terminal 3: Sensores
 
 ```bash
-python3 sensor_client.py <PUBLIC_IP> 8080
+python3 sensor_client.py 54.242.32.222 8080
 # Debería conectarse y empezar a enviar mediciones
 ```
 
@@ -577,3 +577,8 @@ Para demostrar en sustentación:
 ---
 
 Última actualización: 14 de Abril de 2026
+
+
+
+
+cd /home/ec2-user/iot-project/Codigo
