@@ -187,8 +187,14 @@ std::string build_sensor_list() {
 void handle_client(int client_fd, struct sockaddr_in client_addr) {
     std::string ip   = Logger::get_ip(client_addr);
     int         port = Logger::get_port(client_addr);
+    
+    fprintf(stderr, "[HANDLE CLIENT] Iniciado para fd=%d ip=%s port=%d\n", client_fd, ip.c_str(), port);
+    fflush(stderr);
  
     Logger::log("CONN", ip, port, "Nueva conexión aceptada");
+    
+    fprintf(stderr, "[HANDLE CLIENT] Log registrado, awaiting datos\n");
+    fflush(stderr);
  
     ClientRole  role      = ROLE_UNKNOWN;
     std::string sensor_id;
@@ -198,10 +204,19 @@ void handle_client(int client_fd, struct sockaddr_in client_addr) {
  
     while (true) {
         memset(buf, 0, sizeof(buf));
+        fprintf(stderr, "[HANDLE CLIENT] Esperando recv() fd=%d\n", client_fd);
+        fflush(stderr);
+        
         ssize_t n = recv(client_fd, buf, sizeof(buf) - 1, 0);
+        
+        fprintf(stderr, "[HANDLE CLIENT] Recv retornó n=%ld fd=%d\n", n, client_fd);
+        fflush(stderr);
+        
         if (n <= 0) {
             // Conexión cerrada o error
             Logger::log("CONN", ip, port, "Conexión cerrada (recv=" + std::to_string(n) + ")");
+            fprintf(stderr, "[HANDLE CLIENT] Cerrando fd=%d\n", client_fd);
+            fflush(stderr);
             break;
         }
  
@@ -453,20 +468,37 @@ int main(int argc, char* argv[]) {
  
     Logger::log("SYSTEM", "0.0.0.0", port,
                 "Servidor escuchando en puerto " + std::to_string(port));
+    fprintf(stderr, "[ACCEPT LOOP] Iniciando loop de aceptación\n");
+    fflush(stderr);
  
     // ── Loop principal: aceptar conexiones ────────────────────────────────
     while (true) {
         struct sockaddr_in client_addr{};
         socklen_t          addr_len = sizeof(client_addr);
  
+        fprintf(stderr, "[ACCEPT LOOP] Esperando conexión...\n");
+        fflush(stderr);
+        
         int client_fd = accept(server_fd, (struct sockaddr*)&client_addr, &addr_len);
+        
+        fprintf(stderr, "[ACCEPT LOOP] accept() retornó: %d\n", client_fd);
+        fflush(stderr);
+        
         if (client_fd < 0) {
+            fprintf(stderr, "[ACCEPT LOOP] Error en accept: %d\n", client_fd);
+            fflush(stderr);
             Logger::log_error("0.0.0.0", 0, "Error en accept");
             continue;  // no termina, sigue aceptando
         }
  
+        fprintf(stderr, "[ACCEPT LOOP] Cliente aceptado, fd=%d, creando thread\n", client_fd);
+        fflush(stderr);
+        
         // Hilo separado por cliente
         std::thread(handle_client, client_fd, client_addr).detach();
+        
+        fprintf(stderr, "[ACCEPT LOOP] Thread creado y detached\n");
+        fflush(stderr);
     }
  
     #ifdef _WIN32
