@@ -17,6 +17,7 @@
 #include <sstream>
 #include <algorithm>
 #include <cstring>
+#include <cstdio>
 #include <csignal>
  
 // Sockets (multiplataforma)
@@ -402,18 +403,18 @@ void handle_signal(int sig) {
 // ── Main ──────────────────────────────────────────────────────────────────
 int main(int argc, char* argv[]) {
     // DEBUG: Imprimir inmediatamente para verificar que el programa está corriendo
-    std::cerr << "[DEBUG] Servidor iniciando..." << std::endl;
-    std::cerr.flush();
+    fprintf(stderr, "[DEBUG] Servidor iniciando...\n");
+    fflush(stderr);
     
     if (argc != 3) {
-        std::cerr << "Uso: " << argv[0] << " <puerto> <archivo_logs>\n";
+        fprintf(stderr, "Uso: %s <puerto> <archivo_logs>\n", argv[0]);
         return 1;
     }
- 
+
     #ifdef _WIN32
         WSADATA wsa_data;
         if (WSAStartup(MAKEWORD(2, 2), &wsa_data) != 0) {
-            std::cerr << "Error: No se pudo inicializar Winsock\n";
+            fprintf(stderr, "Error: No se pudo inicializar Winsock\n");
             return 1;
         }
     #endif
@@ -421,17 +422,17 @@ int main(int argc, char* argv[]) {
     int         port     = std::stoi(argv[1]);
     std::string log_file = argv[2];
     
-    std::cerr << "[DEBUG] Puerto: " << port << ", Log file: " << log_file << std::endl;
-    std::cerr.flush();
+    fprintf(stderr, "[DEBUG] Puerto: %d, Log file: %s\n", port, log_file.c_str());
+    fflush(stderr);
  
     if (!Logger::init(log_file)) {
-        std::cerr << "[DEBUG] ERROR: Logger::init() falló" << std::endl;
-        std::cerr.flush();
+        fprintf(stderr, "[DEBUG] ERROR: Logger::init() falló\n");
+        fflush(stderr);
         return 1;
     }
     
-    std::cerr << "[DEBUG] Logger inicializado correctamente" << std::endl;
-    std::cerr.flush();
+    fprintf(stderr, "[DEBUG] Logger inicializado correctamente\n");
+    fflush(stderr);
  
     signal(SIGINT,  handle_signal);
     signal(SIGTERM, handle_signal);

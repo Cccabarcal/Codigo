@@ -3,6 +3,7 @@
  
 #include <fstream>
 #include <iostream>
+#include <cstdio>
 #include <string>
 #include <mutex>
 #include <ctime>
@@ -21,22 +22,34 @@ class Logger {
 public:
     // Inicializa el logger con el archivo de salida
     static bool init(const std::string& filename) {
+        fprintf(stderr, "[DEBUG-LOGGER] Antes de lock\n");
+        fflush(stderr);
+        
         std::lock_guard<std::mutex> lock(mtx_);
+        
+        fprintf(stderr, "[DEBUG-LOGGER] Despues de lock\n");
+        fflush(stderr);
         
         // Si el filename es /dev/stdout, no abrir archivo (usar stdout)
         if (filename == "/dev/stdout" || filename == "stdout") {
+            fprintf(stderr, "[DEBUG-LOGGER] Detectando stdout mode\n");
+            fflush(stderr);
             initialized_ = true;
-            log("SYSTEM", "0.0.0.0", 0, "Servidor iniciado. Log: stdout");
+            fprintf(stderr, "[DEBUG-LOGGER] Init completado, retornando true\n");
+            fflush(stderr);
             return true;
         }
         
+        fprintf(stderr, "[DEBUG-LOGGER] Abriendo archivo: %s\n", filename.c_str());
+        fflush(stderr);
+        
         file_.open(filename, std::ios::app);
         if (!file_.is_open()) {
-            std::cerr << "[LOGGER] No se pudo abrir: " << filename << std::endl;
+            fprintf(stderr, "[LOGGER] No se pudo abrir: %s\n", filename.c_str());
+            fflush(stderr);
             return false;
         }
         initialized_ = true;
-        log("SYSTEM", "0.0.0.0", 0, "Servidor iniciado. Log: " + filename);
         return true;
     }
  
@@ -45,12 +58,15 @@ public:
                     const std::string& client_ip,
                     int client_port,
                     const std::string& message) {
+        if (!initialized_) return;  // No loguear si no está inicializado
+        
         std::lock_guard<std::mutex> lock(mtx_);
         std::string entry = "[" + now() + "] [" + level + "] " +
                             client_ip + ":" + std::to_string(client_port) +
                             " | " + message;
         std::cout << entry << std::endl;
-        if (initialized_ && file_.is_open()) {
+        std::cout.flush();
+        if (file_.is_open()) {
             file_ << entry << "\n";
             file_.flush();
         }
