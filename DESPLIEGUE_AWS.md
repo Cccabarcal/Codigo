@@ -209,13 +209,25 @@ cd /home/ec2-user/iot-project
 ### Opción A: Usar SCP (recomendado)
 
 ```bash
-# Desde tu máquina local
-cd /ruta/local/del/proyecto
+# Desde tu máquina local (Windows PowerShell)
+cd D:\Users\Cristian\Desktop\telematica\Codigo
 
-scp -i ~/.ssh/iot-key.pem server.cpp ec2-user@<PUBLIC_IP>:/home/ec2-user/iot-project/
-scp -i ~/.ssh/iot-key.pem *.py ec2-user@<PUBLIC_IP>:/home/ec2-user/iot-project/
-scp -i ~/.ssh/iot-key.pem users.json ec2-user@<PUBLIC_IP>:/home/ec2-user/iot-project/
-scp -i ~/.ssh/iot-key.pem -r templates/ ec2-user@<PUBLIC_IP>:/home/ec2-user/iot-project/
+# Subir TODOS los archivos (más fácil)
+scp -i $env:USERPROFILE\.ssh\iot-key.pem -r * ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
+
+# O subir archivos específicos (Linux/macOS)
+scp -i ~/.ssh/iot-key.pem server.cpp logger.h protocol.h ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
+scp -i ~/.ssh/iot-key.pem *.py ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
+scp -i ~/.ssh/iot-key.pem users.json ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
+scp -i ~/.ssh/iot-key.pem -r templates/ ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
+```
+
+**Verificar que se subieron**:
+```bash
+# En la instancia AWS
+ubuntu@ip-172-31-44-89:~$ cd /home/ec2-user/iot-project/
+ubuntu@ip-172-31-44-89:~/iot-project$ ls -la
+# Debería mostrar: server.cpp, logger.h, protocol.h, *.py, users.json, templates/, etc.
 ```
 
 ### Opción B: Usar Git
@@ -224,15 +236,16 @@ scp -i ~/.ssh/iot-key.pem -r templates/ ec2-user@<PUBLIC_IP>:/home/ec2-user/iot-
 # En la instancia
 cd /home/ec2-user/iot-project
 git clone <URL_REPOSITORIO>
+cd Codigo  # Si el repo tiene estructura de carpetas
 ```
 
-### Opción C: SSH + Nano
+### Opción C: Crear manualmente con nano
 
 ```bash
-# En la instancia
-cat > server.cpp << 'EOF'
-# Copiar contenido de server.cpp aquí
-EOF
+# En la instancia, para cada archivo
+nano server.cpp
+# Copiar y pegar el contenido
+# Ctrl+O, Enter, Ctrl+X para guardar
 ```
 
 ---

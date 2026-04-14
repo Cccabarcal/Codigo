@@ -37,7 +37,7 @@
 #endif
  
 #include "protocol.h"
-#include "logger.h"
+#include "Logger.h"
  
 // ── Configuración ──────────────────────────────────────────────────────────
 #define MAX_CLIENTS     100
