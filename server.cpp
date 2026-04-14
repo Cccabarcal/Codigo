@@ -402,10 +402,6 @@ void handle_signal(int sig) {
  
 // ── Main ──────────────────────────────────────────────────────────────────
 int main(int argc, char* argv[]) {
-    // DEBUG: Imprimir inmediatamente para verificar que el programa está corriendo
-    fprintf(stderr, "[DEBUG] Servidor iniciando...\n");
-    fflush(stderr);
-    
     if (argc != 3) {
         fprintf(stderr, "Uso: %s <puerto> <archivo_logs>\n", argv[0]);
         return 1;
@@ -421,18 +417,10 @@ int main(int argc, char* argv[]) {
 
     int         port     = std::stoi(argv[1]);
     std::string log_file = argv[2];
-    
-    fprintf(stderr, "[DEBUG] Puerto: %d, Log file: %s\n", port, log_file.c_str());
-    fflush(stderr);
  
     if (!Logger::init(log_file)) {
-        fprintf(stderr, "[DEBUG] ERROR: Logger::init() falló\n");
-        fflush(stderr);
         return 1;
     }
-    
-    fprintf(stderr, "[DEBUG] Logger inicializado correctamente\n");
-    fflush(stderr);
  
     signal(SIGINT,  handle_signal);
     signal(SIGTERM, handle_signal);

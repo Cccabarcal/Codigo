@@ -22,26 +22,13 @@ class Logger {
 public:
     // Inicializa el logger con el archivo de salida
     static bool init(const std::string& filename) {
-        fprintf(stderr, "[DEBUG-LOGGER] Antes de lock\n");
-        fflush(stderr);
-        
         std::lock_guard<std::mutex> lock(mtx_);
-        
-        fprintf(stderr, "[DEBUG-LOGGER] Despues de lock\n");
-        fflush(stderr);
         
         // Si el filename es /dev/stdout, no abrir archivo (usar stdout)
         if (filename == "/dev/stdout" || filename == "stdout") {
-            fprintf(stderr, "[DEBUG-LOGGER] Detectando stdout mode\n");
-            fflush(stderr);
             initialized_ = true;
-            fprintf(stderr, "[DEBUG-LOGGER] Init completado, retornando true\n");
-            fflush(stderr);
             return true;
         }
-        
-        fprintf(stderr, "[DEBUG-LOGGER] Abriendo archivo: %s\n", filename.c_str());
-        fflush(stderr);
         
         file_.open(filename, std::ios::app);
         if (!file_.is_open()) {
