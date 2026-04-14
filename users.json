@@ -1,0 +1,22 @@
+{
+  "carlos": {
+    "password": "password123",
+    "role": "admin"
+  },
+  "maria": {
+    "password": "maria456",
+    "role": "operator"
+  },
+  "sensor_user": {
+    "password": "sensor123",
+    "role": "sensor"
+  },
+  "juan": {
+    "password": "juan789",
+    "role": "admin"
+  },
+  "laura": {
+    "password": "laura321",
+    "role": "operator"
+  }
+}

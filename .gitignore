@@ -1,0 +1,50 @@
+# Logs
+*.log
+server.log
+auth_service.log
+sensor_client.log
+operator_client.log
+web_interface.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Otros
+*.bak
+*.tmp
+*.zip
+*.tar.gz
+.env
+.env.local
+
+# Binarios compilados
+server
+server.exe
+*.o
+*.a
+
+# Archivos temporales
+*_backup
+*.old

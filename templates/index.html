@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Centro de Monitoreo IoT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .login-container h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+        }
+        
+        .login-container p {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        .login-btn:active {
+            transform: translateY(0);
+        }
+        
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        
+        .success {
+            color: #27ae60;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+            display: none;
+        }
+        
+        /* Pantalla de monitoreo */
+        .dashboard {
+            display: none;
+            width: 100%;
+            height: 100vh;
+            background: #f5f5f5;
+        }
+        
+        .dashboard.active {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .header-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .username {
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .logout-btn {
+            padding: 8px 16px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+        
+        .content {
+            display: flex;
+            flex: 1;
+            padding: 20px;
+            gap: 20px;
+        }
+        
+        .sensors-panel {
+            flex: 1;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        
+        .sensors-panel h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .sensor-item {
+            padding: 12px;
+            margin-bottom: 10px;
+            background: #f9f9f9;
+            border-left: 4px solid #667eea;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+        
+        .sensor-item:hover {
+            background: #eef0ff;
+        }
+        
+        .sensor-item.active {
+            background: #eef0ff;
+            border-left-color: #764ba2;
+        }
+        
+        .sensor-name {
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .sensor-type {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .measurements-panel {
+            flex: 2;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow-y: auto;
+        }
+        
+        .measurements-panel h2 {
+            margin-bottom: 15px;
+            color: #333;
+        }
+        
+        .measurement {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #f9f9f9;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            color: #333;
+            border-left: 3px solid #27ae60;
+        }
+        
+        .alert {
+            padding: 10px;
+            margin-bottom: 8px;
+            background: #ffe6e6;
+            border-radius: 5px;
+            border-left: 3px solid #e74c3c;
+            color: #c0392b;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 20px;
+            color: #999;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Pantalla de Login -->
+    <div class="login-container" id="loginContainer">
+        <h1>🌐 Centro de Monitoreo IoT</h1>
+        <p>Sistema de Supervisión de Sensores en Tiempo Real</p>
+        
+        <div class="form-group">
+            <label for="username">Usuario:</label>
+            <input type="text" id="username" placeholder="Ej: carlos" value="carlos">
+        </div>
+        
+        <div class="form-group">
+            <label for="password">Contraseña:</label>
+            <input type="password" id="password" placeholder="Contraseña" value="password123">
+        </div>
+        
+        <button class="login-btn" onclick="doLogin()">Conectar</button>
+        
+        <div class="error" id="loginError"></div>
+        <div class="success" id="loginSuccess"></div>
+    </div>
+    
+    <!-- Dashboard -->
+    <div class="dashboard" id="dashboard">
+        <div class="header">
+            <h1>📊 Centro de Monitoreo - Sistema IoT</h1>
+            <div class="header-right">
+                <span class="username" id="usernameDisplay"></span>
+                <button class="logout-btn" onclick="doLogout()">Logout</button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="sensors-panel">
+                <h2>Sensores Activos</h2>
+                <div id="sensorsList">
+                    <div class="loading"><div class="spinner"></div> Cargando sensores...</div>
+                </div>
+            </div>
+            
+            <div class="measurements-panel">
+                <h2>Mediciones</h2>
+                <div id="measurementsList">
+                    <p style="color: #999; text-align: center;">Selecciona un sensor para ver sus mediciones</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let selectedSensor = null;
+        
+        function doLogin() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorDiv = document.getElementById('loginError');
+            const successDiv = document.getElementById('loginSuccess');
+            
+            if (!username || !password) {
+                errorDiv.textContent = '⚠️ Ingresa usuario y contraseña';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    password: password
+                })
+            })
+            .then(r => r.json())
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('loginContainer').style.display = 'none';
+                    document.getElementById('dashboard').classList.add('active');
+                    document.getElementById('usernameDisplay').textContent = `Conectado como: ${username}`;
+                    loadSensors();
+                } else {
+                    errorDiv.textContent = '❌ ' + data.message;
+                    errorDiv.style.display = 'block';
+                }
+            })
+            .catch(e => {
+                errorDiv.textContent = '❌ Error: ' + e.message;
+                errorDiv.style.display = 'block';
+            });
+        }
+        
+        function loadSensors() {
+            fetch('/sensors')
+            .then(r => r.json())
+            .then(data => {
+                const list = document.getElementById('sensorsList');
+                list.innerHTML = '';
+                
+                if (data.success && data.sensors && data.sensors.length > 0) {
+                    data.sensors.forEach(sensor => {
+                        const div = document.createElement('div');
+                        div.className = 'sensor-item';
+                        div.innerHTML = `
+                            <div class="sensor-name">${sensor.id}</div>
+                            <div class="sensor-type">${sensor.type}</div>
+                        `;
+                        div.onclick = () => selectSensor(sensor.id, div);
+                        list.appendChild(div);
+                    });
+                } else {
+                    list.innerHTML = '<p style="color: #999;">Sin sensores disponibles</p>';
+                }
+            })
+            .catch(e => {
+                document.getElementById('sensorsList').innerHTML = `<p style="color: red;">Error: ${e.message}</p>`;
+            });
+        }
+        
+        function selectSensor(sensorId, element) {
+            if (selectedSensor) {
+                document.querySelectorAll('.sensor-item').forEach(e => e.classList.remove('active'));
+            }
+            element.classList.add('active');
+            selectedSensor = sensorId;
+            loadMeasurements(sensorId);
+        }
+        
+        function loadMeasurements(sensorId) {
+            const list = document.getElementById('measurementsList');
+            list.innerHTML = '<div class="loading"><div class="spinner"></div> Cargando mediciones...</div>';
+            
+            fetch(`/measurements/${sensorId}?count=15`)
+            .then(r => r.json())
+            .then(data => {
+                list.innerHTML = '';
+                
+                if (data.success && data.measurements) {
+                    data.measurements.forEach(m => {
+                        const div = document.createElement('div');
+                        div.className = 'measurement';
+                        div.innerHTML = `${m.sensor_id}: ${m.value.toFixed(2)} @ ${m.timestamp}`;
+                        list.appendChild(div);
+                    });
+                    
+                    // Auto-refresh cada 5 segundos
+                    setTimeout(() => {
+                        if (selectedSensor === sensorId) {
+                            loadMeasurements(sensorId);
+                        }
+                    }, 5000);
+                } else {
+                    list.innerHTML = '<p style="color: #999;">Sin mediciones disponibles</p>';
+                }
+            })
+            .catch(e => {
+                list.innerHTML = `<p style="color: red;">Error: ${e.message}</p>`;
+            });
+        }
+        
+        function doLogout() {
+            fetch('/logout', { method: 'POST' })
+            .then(() => {
+                document.getElementById('dashboard').classList.remove('active');
+                document.getElementById('loginContainer').style.display = 'block';
+                document.getElementById('username').value = '';
+                document.getElementById('password').value = '';
+            });
+        }
+    </script>
+</body>
+</html>
