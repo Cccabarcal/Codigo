@@ -5,19 +5,36 @@
 ## 📑 Tabla de Contenidos
 
 1. [Descripción del Proyecto](#descripción-del-proyecto)
-2. [Arquitectura](#arquitectura)
-3. [Requisitos Previos](#requisitos-previos)
-4. [Instalación](#instalación)
-5. [Ejecución Local](#ejecución-local)
-6. [Despliegue en AWS](#despliegue-en-aws)
-7. [Estructura de Archivos](#estructura-de-archivos)
-8. [Protocolo de Comunicación](#protocolo-de-comunicación)
-9. [Guía de Uso](#guía-de-uso)
-10. [Troubleshooting](#troubleshooting)
+2. [Documentación Rápida](#documentación-rápida)
+3. [Arquitectura](#arquitectura)
+4. [Requisitos Previos](#requisitos-previos)
+5. [Instalación](#instalación)
+6. [Ejecución Local](#ejecución-local)
+7. [Despliegue en AWS](#despliegue-en-aws)
+8. [Estructura de Archivos](#estructura-de-archivos)
+9. [Protocolo de Comunicación](#protocolo-de-comunicación)
+10. [Guía de Uso](#guía-de-uso)
+11. [Troubleshooting](#troubleshooting)
 
 ---
 
 ## Descripción del Proyecto
+
+## 📚 Documentación Rápida
+
+**Para despliegue en AWS:**
+- 👉 Lee [`FINAL_DEPLOYMENT.md`](FINAL_DEPLOYMENT.md) - Guía paso a paso completa
+
+**Para detalles técnicos:**
+- 📖 [`PROTOCOLO.md`](PROTOCOLO.md) - Especificación del protocolo TCP/IP
+- 📋 [`CHECKLIST_FINAL.md`](CHECKLIST_FINAL.md) - Verificación de requisitos
+- 🌐 [`DESPLIEGUE_AWS.md`](DESPLIEGUE_AWS.md) - Configuración detallada AWS
+
+**Para ejecución local:**
+- Ejecuta `./prepare_deployment.sh` (Linux/macOS) o `.\prepare_deployment.ps1` (Windows)
+- Luego `bash run_local.sh` para instrucciones de ejecución
+
+---
 
 Este proyecto implementa un **Sistema de Monitoreo IoT Distribuido** que permite:
 

@@ -41,7 +41,7 @@ void handle_client(int client_fd, struct sockaddr_in client_addr) {
     char buf[1024];
     while (true) {
         memset(buf, 0, sizeof(buf));
-        ssize_t n = recv(client_fd, buf, sizeof(buf) - 1, 0);
+        size_t n = recv(client_fd, buf, sizeof(buf) - 1, 0);
         
         if (n <= 0) {
             fprintf(stderr, "[CLIENT %d] Desconectado\n", client_fd);

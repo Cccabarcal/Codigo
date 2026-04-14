@@ -1,10 +1,21 @@
 /*
- * server.cpp — Servidor central del Sistema IoT
+ * server.cpp — Servidor central del Sistema IoT Distribuido
+ * 
+ * Descripción:
+ *   Servidor de monitoreo que actúa como hub central para sensores y operadores.
+ *   Procesa mediciones, detecta anomalías, almacena historial y emite alertas.
+ *   Maneja múltiples clientes simultáneamente mediante threading.
  *
- * Uso: ./server <puerto> <archivo_logs>
- * Ejemplo: ./server 8080 server.log
+ * Compilación:
+ *   g++ -std=c++17 -pthread -o server server.cpp
  *
- * Compilar: g++ -std=c++17 -pthread -o server server.cpp
+ * Ejecución:
+ *   ./server <puerto> <archivo_logs>
+ *   ./server 8080 server.log
+ *
+ * Protocolo: Ver PROTOCOLO.md para especificación completa
+ * Autor: Proyecto I - Universidad
+ * Fecha: Abril 2026
  */
  
 #include <iostream>
