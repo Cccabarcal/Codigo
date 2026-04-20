@@ -341,6 +341,4 @@ Niveles:
 
 ---
 
-## Versionado
-- **v1.0**: 2026-04-14 - Especificación inicial completa
 
