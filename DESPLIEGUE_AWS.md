@@ -1,584 +1,716 @@
-# 🚀 Guía de Despliegue en AWS
+# 🚀 Despliegue en AWS - Guía Paso a Paso
 
-## Overview
+## 🌍 **Acceso Remoto**
 
-Esta guía cubre el despliegue completo del Sistema IoT en Amazon Web Services (AWS) usando:
-- **EC2**: Instancia para ejecutar servidor y servicios
-- **Route 53**: DNS para acceso por nombre de dominio
-- **Security Groups**: Firewall para control de puertos
+**🔗 Dominio DNS (DuckDNS):** [http://proyectoiota.duckdns.org:5000/](http://proyectoiota.duckdns.org:5000/)
+
+**Credenciales de acceso:**
+- Usuario: `carlos`
+- Contraseña: `password123`
 
 ---
 
 ## Paso 1: Crear Instancia EC2
 
-### 1.1 Inicializar Launch Instance
-
-1. Acceder a [AWS Console](https://console.aws.amazon.com)
-2. Navegar a **EC2 → Instances → Launch Instance**
-3. Nombre: `iot-server` (o el que prefieras)
-
-### 1.2 Seleccionar AMI
-
-**Opción 1: Amazon Linux 2** (recomendado)
-- Free tier elegible
-- Optimizado para AWS
-- Seleccionar la más reciente
-
-**Opción 2: Ubuntu 20.04 LTS**
-- Más familiar para desarrolladores
-- Full support
-- Requiere verificación de free tier
-
-### 1.3 Configurar Instancia
-
-- **Instance Type**: `t2.micro` (Free tier)
-- **Network**: Default VPC
-- **Subnet**: Default
-- **Auto-assign Public IP**: Enable
-- **IAM Role**: None (para este proyecto)
-
-### 1.4 Storage
-
-- **Size**: 20 GB (default, suficiente)
-- **Volume Type**: gp2 (default)
-- **Delete on Termination**: Yes
-
-### 1.5 Security Group (⚠️ CRÍTICO)
-
-Crear nuevo security group: `iot-services-sg`
-
-**Inbound Rules**:
-```
-Type: SSH
-Port: 22
-Source: <TU_IP> (RESTRICTO A TU IP)
-
-Type: HTTP
-Port: 80
-Source: 0.0.0.0/0
-
-Type: HTTPS
-Port: 443
-Source: 0.0.0.0/0
-
-Type: Custom TCP
-Port: 8080 (IoT Server)
-Source: 0.0.0.0/0
-
-Type: Custom TCP
-Port: 9000 (Auth Service)
-Source: 0.0.0.0/0
-
-Type: Custom TCP
-Port: 5000 (Web Interface)
-Source: 0.0.0.0/0
-```
-
-**Outbound Rules**:
-- All traffic allowed (default)
-
-### 1.6 Key Pair
-
-1. Create new key pair
-2. Name: `iot-key` (o el que prefieras)
-3. Type: RSA
-4. Format: .pem (Linux/macOS) o .ppk (PuTTY Windows)
-5. **Guardar en lugar seguro**: `~/.ssh/iot-key.pem`
-
-### 1.7 Launch Instance
-
-Click "Launch Instance"
-
-Esperar a que el estado cambie a **"Running"** (puede tomar 1-2 minutos)
+1. Ir a **AWS Console** → **EC2** → **Launch Instance**
+2. Seleccionar: **Ubuntu 22.04 LTS** (Free Tier elegible)
+3. Tipo de Instancia: **t2.micro**
+4. Configurar **Security Group** con estos puertos:
+   - Puerto **22** (SSH): Origen tu IP
+   - Puerto **8080** (IoT Server): Origen 0.0.0.0/0
+   - Puerto **9000** (Auth Service): Origen 0.0.0.0/0
+   - Puerto **5000** (Web Interface): Origen 0.0.0.0/0
+5. Crear/seleccionar **Key Pair** (.pem)
+6. Hacer clic en **Launch**
 
 ---
 
-## Paso 2: Conectarse a la Instancia
+## Paso 2: Conectar a la Instancia por SSH
 
-### En Linux/macOS
+Desde **tu máquina local** (PowerShell/Terminal):
 
 ```bash
-# Configurar permisos (IMPORTANTE)
+# Cambiar permisos del archivo de key (IMPORTANTE)
 chmod 400 ~/.ssh/iot-key.pem
 
-# Conectar (obtener IP pública de AWS Console)
-ssh -i ~/.ssh/iot-key.pem ec2-user@<PUBLIC_IP>
-# Para Ubuntu:
-# ssh -i ~/.ssh/iot-key.pem ubuntu@<PUBLIC_IP>
+# Conectar por SSH (obtén PUBLIC_IP de AWS Console)
+ssh -i ~/.ssh/iot-key.pem ubuntu@<PUBLIC_IP>
 ```
 
-### En Windows (PowerShell)
-
-```powershell
-# Con AWS CLI
-aws ec2-instance-connect open-remote-desktop-window --instance-id i-xxxxx
-
-# O con PuTTY
-# 1. Convertir key: PuTTYgen → Load .pem → Save private key .ppk
-# 2. PuTTY → Host: ec2-user@<PUBLIC_IP> → Auth → Private key .ppk → Open
-```
-
-### Verificar Conexión
-
+**Ejemplo:**
 ```bash
-# Deberías ver algo como:
-ec2-user@ip-172-31-0-xxx:~$
+ssh -i ~/.ssh/iot-key.pem ubuntu@54.242.32.222
+```
 
-# O para Ubuntu:
-ubuntu@ip-172-31-0-xxx:~$
+Deberías ver algo como:
+```
+ubuntu@ip-172-31-44-89:~$
 ```
 
 ---
 
-## Paso 3: Preparar Servidor
+## Paso 3: Actualizar Sistema e Instalar Dependencias
 
-### 3.1 Actualizar Sistema
+En **la instancia EC2**, ejecuta:
 
 ```bash
-# Amazon Linux 2
-sudo yum update -y
-sudo yum install -y gcc-c++ make kernel-devel
-
-# Ubuntu
+# Actualizar sistema
 sudo apt update
 sudo apt upgrade -y
+
+# Instalar compilador C++
 sudo apt install -y build-essential
+
+# Instalar Python y pip
+sudo apt install -y python3 python3-pip
+
+# Instalar librerías Python necesarias
+sudo apt install -y python3-flask python3-dev python3-requests
 ```
 
-### 3.2 Instalar Python y Dependencias
-
+**Verificar instalaciones:**
 ```bash
-# Amazon Linux 2
-amazon-linux-extras install python3.8 -y
-sudo yum install python3-pip -y
-
-# Ubuntu (Python 3 ya está instalado por defecto)
-sudo apt install python3-pip -y
-
-# Verificar versión de Python
+g++ --version
 python3 --version
-```
-
-### 3.3 Instalar Flask
-
-#### Opción A: Instalación Global (Rápido para desarrollo)
-
-```bash
-# Ubuntu 22.04+ requiere esta bandera (SOLO desarrollo)
-pip3 install --break-system-packages flask
-
-# Verificar
 python3 -c "import flask; print(flask.__version__)"
-```
-
-#### Opción B: Virtual Environment (Recomendado para producción)
-
-```bash
-# Crear virtual environment
-python3 -m venv venv
-
-# Activar
-source venv/bin/activate
-
-# Instalar Flask
-pip install flask
-
-# Verificar
-python3 -c "import flask; print(flask.__version__)"
-
-# Deactivar (cuando termines)
-# deactivate
-```
-
-**Nota**: Si usas virtual environment, actívalo cada vez que abras una nueva sesión:
-```bash
-source venv/bin/activate
-```
-
-### 3.4 Crear Directorio de Proyecto
-
-```bash
-mkdir -p /home/ec2-user/iot-project
-cd /home/ec2-user/iot-project
 ```
 
 ---
 
-## Paso 4: Subir Archivos
+## Paso 4: Clonar el Repositorio
 
-### Opción A: Usar SCP (recomendado)
+En **la instancia EC2**:
 
 ```bash
-# Desde tu máquina local (Windows PowerShell)
-cd D:\Users\Cristian\Desktop\telematica\Codigo
+# Crear directorio
+mkdir -p /home/ubuntu/Codigo
 
-# Subir TODOS los archivos (más fácil)
-scp -i $env:USERPROFILE\.ssh\iot-key.pem -r * ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
+# Navegar
+cd /home/ubuntu/Codigo
 
-# O subir archivos específicos (Linux/macOS)
-scp -i ~/.ssh/iot-key.pem server.cpp logger.h protocol.h ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
-scp -i ~/.ssh/iot-key.pem *.py ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
-scp -i ~/.ssh/iot-key.pem users.json ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
-scp -i ~/.ssh/iot-key.pem -r templates/ ubuntu@<PUBLIC_IP>:/home/ec2-user/iot-project/
+# Clonar desde GitHub (si tienes configurado git)
+git clone <URL_DE_TU_REPOSITORIO>
+
+# O si está todo en una carpeta
+cd Codigo
+
+# Verificar que están todos los archivos
+ls -la
 ```
 
-**Verificar que se subieron**:
-```bash
-# En la instancia AWS
-ubuntu@ip-172-31-44-89:~$ cd /home/ec2-user/iot-project/
-ubuntu@ip-172-31-44-89:~/iot-project$ ls -la
-# Debería mostrar: server.cpp, logger.h, protocol.h, *.py, users.json, templates/, etc.
+Deberías ver:
 ```
-
-### Opción B: Usar Git
-
-```bash
-# En la instancia
-cd /home/ec2-user/iot-project
-git clone <URL_REPOSITORIO>
-cd Codigo  # Si el repo tiene estructura de carpetas
-```
-
-### Opción C: Crear manualmente con nano
-
-```bash
-# En la instancia, para cada archivo
-nano server.cpp
-# Copiar y pegar el contenido
-# Ctrl+O, Enter, Ctrl+X para guardar
+server.cpp
+Logger.h
+protocol.h
+auth_service.py
+sensor_client.py
+operator_client.py
+web_interface.py
+users.json
 ```
 
 ---
 
-## Paso 5: Compilar y Probar
+## Paso 5: Compilar el Servidor C++
 
-### En la Instancia EC2
+En **la instancia EC2**:
 
 ```bash
-# Compilar servidor
+cd /home/ubuntu/Codigo
+
+# Compilar
 g++ -std=c++17 -pthread -o server server.cpp
 
-# Verificar que compiló
+# Verificar que compiló correctamente
 ls -la server
+file server
+```
+
+**Salida esperada:**
+```
+-rwxr-xr-x 1 ubuntu ubuntu 45000 Apr 20 01:30 server
+server: ELF 64-bit LSB executable, x86-64, version 1
 ```
 
 ---
 
-## Paso 6: Ejecutar en Foreground (Testing)
+## Paso 6: Ejecutar los Servicios (Abre 4 Terminales SSH)
 
-### Terminal 1: Servidor IoT
+Abre **4 conexiones SSH diferentes** a tu instancia EC2. En cada una, ejecuta:
+
+---
+
+### **Terminal SSH 1: Servidor IoT Central (C++)**
 
 ```bash
+cd /home/ubuntu/Codigo
 ./server 8080 server.log
-# Debería mostrar:
-# [2026-04-14 10:30:45] [SYSTEM] Servidor escuchando en puerto 8080
 ```
 
-### Terminal 2: Auth Service
+**Salida esperada:**
+```
+[2026-04-20 01:33:00] [SYSTEM] 0.0.0.0:8080 | Servidor escuchando en puerto 8080
+[2026-04-20 01:33:00] [CONN] Esperando conexiones...
+```
+
+**⏸️ DEJAR ESTA TERMINAL ABIERTA Y SIN CERRAR**
+
+---
+
+### **Terminal SSH 2: Servicio de Autenticación (Python)**
 
 ```bash
+cd /home/ubuntu/Codigo
 python3 auth_service.py
-# Debería mostrar:
-# [2026-04-14 10:30:46] [INFO] Escuchando en 0.0.0.0:9000
 ```
 
-### Terminal 3: Sensores
+**Salida esperada:**
+```
+[2026-04-20 01:33:01] [INFO] Escuchando en 0.0.0.0:9000
+[2026-04-20 01:33:01] [INFO] Servicio de Autenticación listo
+```
+
+**⏸️ DEJAR ESTA TERMINAL ABIERTA Y SIN CERRAR**
+
+---
+
+### **Terminal SSH 3: Clientes Sensor (Python)**
 
 ```bash
+cd /home/ubuntu/Codigo
 python3 sensor_client.py localhost 8080
-# Debería conectarse y empezar a enviar mediciones
 ```
 
-### Terminal 4: Web Interface
+**Salida esperada:**
+```
+[2026-04-20 01:33:02] [DEBUG] [temp-01] → REGISTER SENSOR temp-01 temperature celsius
+[2026-04-20 01:33:02] [DEBUG] [temp-01] ← OK REGISTERED temp-01
+[2026-04-20 01:33:05] [DEBUG] [temp-01] → MEASURE temp-01 23.5 2026-04-20T01:33:05Z
+[2026-04-20 01:33:05] [DEBUG] [temp-01] ← OK
+```
+
+**⏸️ DEJAR ESTA TERMINAL ABIERTA Y SIN CERRAR**
+
+---
+
+### **Terminal SSH 4: Interfaz Web Flask (Python)**
 
 ```bash
+cd /home/ubuntu/Codigo
 python3 web_interface.py
-# Debería mostrar:
-# INFO Interfaz Web iniciando en 0.0.0.0:5000
 ```
 
-### Verificar Conectividad
+**Salida esperada:**
+```
+[2026-04-20 01:33:06] [INFO] Interfaz Web iniciando en 0.0.0.0:5000
+WARNING: This is a development server.
+ * Running on http://0.0.0.0:5000
+```
 
-Desde otra máquina:
+**⏸️ DEJAR ESTA TERMINAL ABIERTA Y SIN CERRAR**
+
+---
+
+## Paso 7: Verificar que Todo Funciona (Terminal SSH 5)
+
+Abre una **5ª conexión SSH** (sin cerrar las anteriores):
+
 ```bash
-# Probar ports
-curl http://<PUBLIC_IP>:5000
-telnet <PUBLIC_IP> 8080  # Ctrl+] then quit para salir
+ssh -i ~/.ssh/iot-key.pem ubuntu@<PUBLIC_IP>
+```
+
+**Ejecuta estos comandos de verificación:**
+
+---
+
+### Verificar Procesos Activos
+
+```bash
+ps aux | grep -E "server|python3" | grep -v grep
+```
+
+Debería mostrar:
+```
+ubuntu  1234  0.1  0.5 123456 45678 ?  Sl  01:33  0:01 ./server 8080 server.log
+ubuntu  1235  0.0  1.2 234567 56789 ?  S   01:33  0:00 python3 auth_service.py
+ubuntu  1236  0.0  1.1 234567 56789 ?  S   01:33  0:00 python3 sensor_client.py
+ubuntu  1237  0.0  1.3 234567 56789 ?  S   01:33  0:00 python3 web_interface.py
 ```
 
 ---
 
-## Paso 7: Ejecutar en Background (Producción)
-
-### Opción A: Usar `nohup` + `screen`
+### Verificar Puertos Escuchando
 
 ```bash
-# Terminal 1: Servidor
-screen -S iot-server
-./server 8080 server.log
-# Ctrl+A D para desconectar
-
-# Terminal 2: Auth
-screen -S auth-service
-python3 auth_service.py
-# Ctrl+A D
-
-# Terminal 3: Sensores
-screen -S sensors
-python3 sensor_client.py <PUBLIC_IP> 8080
-# Ctrl+A D
-
-# Terminal 4: Web
-screen -S web
-python3 web_interface.py
-# Ctrl+A D
-
-# Listar screens
-screen -ls
-
-# Reconectar a un screen
-screen -r iot-server
+netstat -tuln | grep -E "5000|8080|9000"
 ```
 
-### Opción B: Usar Systemd (Profesional)
-
-```bash
-# Crear service para servidor IoT
-sudo bash -c 'cat > /etc/systemd/system/iot-server.service << EOF
-[Unit]
-Description=IoT Central Server
-After=network.target
-
-[Service]
-Type=simple
-User=ec2-user
-WorkingDirectory=/home/ec2-user/iot-project
-ExecStart=/home/ec2-user/iot-project/server 8080 server.log
-Restart=always
-RestartSec=10
-
-[Install]
-WantedBy=multi-user.target
-EOF
-'
-
-# Habilitar y iniciar
-sudo systemctl daemon-reload
-sudo systemctl enable iot-server
-sudo systemctl start iot-server
-sudo systemctl status iot-server
-
-# Ver logs
-journalctl -u iot-server -f
+Debería mostrar:
 ```
-
-Repetir para `auth_service.service`, `sensors.service`, `web.service`
-
----
-
-## Paso 8: Configurar DNS (Route 53)
-
-### 8.1 Registrar Dominio (si no lo tienes)
-
-1. Ir a Route 53 → Registered domains
-2. Buscar dominio disponible
-3. Comprar (ej: `iot-monitor.com`)
-
-### 8.2 Crear Hosted Zone
-
-1. Route 53 → Hosted zones
-2. Create hosted zone: `iot-monitor.com`
-3. Copiar nameservers a tu registrador si es diferente
-
-### 8.3 Crear Registros
-
-#### Record A (Principal)
-
-- Name: `iot-monitor.com`
-- Type: A
-- Value: `<PUBLIC_IP_EC2>`
-- TTL: 300
-- Click Create records
-
-#### Subdomino para Web (Opcional)
-
-- Name: `web.iot-monitor.com`
-- Type: A
-- Value: `<PUBLIC_IP_EC2>`
-- TTL: 300
-- Create records
-
----
-
-## Paso 9: Certificado SSL (HTTPS) - Opcional pero Recomendado
-
-### Usar Let's Encrypt con Certbot
-
-```bash
-# En la instancia, instalar certbot
-sudo yum install python3-certbot -y  # Amazon Linux
-sudo apt install certbot -y          # Ubuntu
-
-# Obtener certificado
-sudo certbot certonly --standalone -d iot-monitor.com
-
-# Configurar Flask para usar certificado (en web_interface.py)
-# Descomentar la última línea y cambiar:
-# app.run(host='0.0.0.0', port=5000, ssl_context=('cert.pem', 'key.pem'))
-
-# Por defecto certbot guarda en:
-# /etc/letsencrypt/live/iot-monitor.com/fullchain.pem (cert.pem)
-# /etc/letsencrypt/live/iot-monitor.com/privkey.pem (key.pem)
+tcp    0    0 0.0.0.0:5000    0.0.0.0:*    LISTEN
+tcp    0    0 0.0.0.0:8080    0.0.0.0:*    LISTEN
+tcp    0    0 0.0.0.0:9000    0.0.0.0:*    LISTEN
 ```
 
 ---
 
-## Paso 10: Monitoreo y Logs
-
-### Ver Logs en Tiempo Real
+### Verificar Sensores Registrados
 
 ```bash
-# Servidor
-tail -f /home/ec2-user/iot-project/server.log
-
-# Auth
-tail -f /home/ec2-user/iot-project/auth_service.log
-
-# Web
-tail -f /home/ec2-user/iot-project/web_interface.log
-
-# Sensores
-tail -f /home/ec2-user/iot-project/sensor_client.log
+grep "REGISTER SENSOR" /home/ubuntu/Codigo/server.log | head -5
 ```
 
-### CloudWatch (Monitoreo Avanzado)
-
-1. Ir a CloudWatch → Dashboards
-2. Create dashboard → Add widgets
-3. Seleccionar métricas de EC2
-4. Monitorear CPU, red, disco
+Debería mostrar (6 sensores):
+```
+[2026-04-20 01:33:02] [DEBUG] temp-01 REGISTER SENSOR
+[2026-04-20 01:33:02] [DEBUG] temp-02 REGISTER SENSOR
+[2026-04-20 01:33:03] [DEBUG] humid-01 REGISTER SENSOR
+[2026-04-20 01:33:03] [DEBUG] press-01 REGISTER SENSOR
+[2026-04-20 01:33:04] [DEBUG] vibra-01 REGISTER SENSOR
+[2026-04-20 01:33:04] [DEBUG] energy-01 REGISTER SENSOR
+```
 
 ---
 
-## Paso 11: Mantener Backup
-
-### Crear Snapshot de EBS
-
-1. EC2 → Volumes
-2. Select volume de tu instancia
-3. Create snapshot
-4. Usar para recuperación ante fallas
-
-### Backup Regular
+### Verificar Mediciones Llegando
 
 ```bash
-# Script de backup
+grep "MEASURE" /home/ubuntu/Codigo/server.log | head -3
+```
+
+Debería mostrar:
+```
+[2026-04-20 01:33:05] [DEBUG] temp-01 MEASURE 23.5
+[2026-04-20 01:33:05] [DEBUG] temp-02 MEASURE 24.1
+[2026-04-20 01:33:06] [DEBUG] humid-01 MEASURE 65.3
+```
+
+---
+
+## Paso 8: Acceder a la Interfaz Web
+
+Desde **tu navegador en máquina local**:
+
+```
+http://<PUBLIC_IP>:5000
+```
+
+**Ejemplo:**
+```
+http://54.242.32.222:5000
+```
+
+**Credenciales de login:**
+- Usuario: `carlos`
+- Contraseña: `password123`
+
+**Verás:**
+- ✅ Tabla con 6 sensores activos
+- ✅ Mediciones en tiempo real actualizándose
+- ✅ Alertas si algún valor está fuera de rango
+- ✅ Historial de mediciones por sensor
+
+---
+
+## Paso 9: Monitoreo en Vivo de Logs
+
+En **Terminal 5**, puedes ver logs en tiempo real:
+
+```bash
+# Ver logs del servidor (nuevas líneas)
+tail -f /home/ubuntu/Codigo/server.log
+```
+
+O abre nuevas terminales para cada log:
+
+```bash
+# Terminal 6: Logs de sensores
+tail -f /home/ubuntu/Codigo/sensor_client.log
+
+# Terminal 7: Logs de auth
+tail -f /home/ubuntu/Codigo/auth_service.log
+
+# Terminal 8: Logs de web
+tail -f /home/ubuntu/Codigo/web_interface.log
+```
+
+---
+
+## Paso 10: Configurar DNS con DuckDNS (RECOMENDADO - GRATUITO)
+
+**DuckDNS** permite acceder a tu servidor usando un dominio en lugar de IP, **completamente gratis**.
+
+### 10.1: Registrarse en DuckDNS (en tu navegador)
+
+```bash
+# Ir a https://www.duckdns.org
+# 1. Hacer clic en "Sign in" (usar Google/GitHub)
+# 2. Crear subdominio: proyectoiota
+# 3. Copiar el TOKEN (cadena larga de caracteres)
+```
+
+**✅ YA CONFIGURADO:**
+- Dominio: `proyectoiota.duckdns.org`
+- Acceso: http://proyectoiota.duckdns.org:5000/
+
+---
+
+### 10.2: Crear Script de Actualización DNS (en tu máquina local)
+
+```bash
+cat > update_dns.sh << 'EOF'
 #!/bin/bash
-BACKUP_DIR="/home/ec2-user/backups"
-mkdir -p $BACKUP_DIR
-tar -czf $BACKUP_DIR/iot-backup-$(date +%Y%m%d).tar.gz \
-  /home/ec2-user/iot-project/*
+DUCKDNS_TOKEN="tu_token_aqui"
+DUCKDNS_DOMAIN="proyectoiota"
+IP_PUBLICA=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+curl -s "https://www.duckdns.org/update?domains=${DUCKDNS_DOMAIN}&token=${DUCKDNS_TOKEN}&ip=${IP_PUBLICA}"
+echo "[$(date)] IP actualizada: $IP_PUBLICA"
+EOF
 
-# Ejecutar diariamente con cron
+chmod +x update_dns.sh
+```
+
+---
+
+### 10.3: Subir Script a EC2 (desde tu máquina local)
+
+```bash
+# En tu máquina local
+scp -i ~/.ssh/iot-key.pem update_dns.sh ubuntu@<PUBLIC_IP>:~/Codigo/
+```
+
+---
+
+### 10.4: Ejecutar Script en EC2 (Terminal SSH 5)
+
+```bash
+# En Terminal SSH 5 (la que usas para verificar)
+ssh -i ~/.ssh/iot-key.pem ubuntu@<PUBLIC_IP>
+
+cd ~/Codigo
+./update_dns.sh
+```
+
+**Salida esperada:**
+```
+[2026-04-20 01:45:00] IP actualizada: 54.242.32.222
+```
+
+---
+
+### 10.5: Verificar que DNS Está Resuelto (Terminal SSH 5)
+
+```bash
+# Esperar 5-10 segundos
+sleep 10
+
+# Verificar DNS
+nslookup proyectoiota.duckdns.org
+```
+
+**Salida esperada:**
+```
+Server:    127.0.0.53
+Address:   127.0.0.53#53
+
+Non-authoritative answer:
+Name:   proyectoiota.duckdns.org
+Address: 54.242.32.222
+```
+
+**Si muestra la IP pública de tu EC2, ¡DNS está funcionando!** ✅
+
+---
+
+### 10.6: Configurar Actualización Automática con Cron (Terminal SSH 5)
+
+```bash
+# En EC2, editar crontab
 crontab -e
-# Agregar: 0 2 * * * /home/ec2-user/backup.sh
+
+# Añadir esta línea al final:
+*/5 * * * * /home/ubuntu/Codigo/update_dns.sh >> /home/ubuntu/Codigo/dns_update.log 2>&1
+```
+
+Esto actualiza automáticamente la IP cada 5 minutos.
+
+---
+
+### 10.7: Acceder por Dominio (desde tu navegador)
+
+```
+http://proyectoiota.duckdns.org:5000
+```
+
+**Debería mostrar:**
+- ✅ Página de login
+- ✅ Login con carlos/password123
+- ✅ 6 sensores activos
+- ✅ Mediciones en tiempo real
+
+---
+
+## Paso 11: Verificación Completa del DNS (Terminal SSH 5)
+
+```bash
+# Desde tu máquina local, verificar DNS
+nslookup proyectoiota.duckdns.org
+```
+
+```bash
+# Probar conectividad HTTP
+curl -I http://proyectoiota.duckdns.org:5000
+```
+
+**Salida esperada:**
+```
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+```
+
+```bash
+# Probar puerto 8080 (IoT Server)
+nc -zv proyectoiota.duckdns.org 8080
+```
+
+**Salida esperada:**
+```
+Connection to proyectoiota.duckdns.org 8080 port [tcp/*] succeeded!
 ```
 
 ---
 
-## Costos Estimados
+## ✅ Sistema Completamente Funcional
 
-| Servicio | Cantidad | Precio Mensual |
-|----------|----------|---------------|
-| EC2 t2.micro | 1 | $0-7 (Free tier 1 año) |
-| NAT Gateway | - | - |
-| Data transfer | ~5GB | ~$0.50 |
-| Route 53 | 1 zone | $0.50 |
-| **Total** | | **~$1/mes** |
+Si llegaste aquí y todo funciona:
 
-> Nota: Free tier AWS cubre 1 año de EC2 t2.micro + 5GB descarga/mes
+| Verificación | Estado |
+|---|---|
+| ✅ Terminal SSH 1: Servidor corriendo | `ps aux \| grep server` |
+| ✅ Terminal SSH 2: Auth funcionando | `ps aux \| grep auth_service` |
+| ✅ Terminal SSH 3: Sensores enviando | Ver logs en `server.log` |
+| ✅ Terminal SSH 4: Web respondiendo | `curl -I http://localhost:5000` |
+| ✅ DNS resolviendo | `nslookup proyectoiota.duckdns.org` |
+| ✅ Acceso remoto | http://proyectoiota.duckdns.org:5000 |
+
+**🎉 ¡Proyecto completamente deployado en AWS!** 🚀
 
 ---
 
-## Troubleshooting
+## Troubleshooting en AWS
 
-### Instancia no responde
+### ❌ **Problema: "Connection refused" en Terminal SSH 1**
 
-```bash
-# Verificar desde AWS Console
-# EC2 → Instances → Status checks
-
-# Reiniciar
-# Instance State → Reboot instance
-```
-
-### Port 22 bloqueado
-
-1. Verificar Security Group inbound rules
-2. Asegurar que tu IP está en la whitelist
-3. Probar desde IP diferente (si es dinámica)
-
-### Aplicación se cuelga
+**Solución:**
 
 ```bash
-# Matar procesos
+# Verificar que el servidor está corriendo
 ps aux | grep server
-ps aux | grep python3
 
-kill -9 <PID>
-
-# Reiniciar
-screen -r iot-server
+# Si no está corriendo, iniciar manualmente
+cd /home/ubuntu/Codigo
 ./server 8080 server.log
 ```
 
-### Espacio en disco lleno
+---
+
+### ❌ **Problema: "Address already in use" al compilar/ejecutar**
+
+**Solución:**
 
 ```bash
-# Verificar
-df -h
+# Encontrar proceso en puerto 8080
+lsof -i :8080
 
-# Limpiar logs antiguos
-find . -name "*.log" -mtime +7 -delete
+# O en Ubuntu moderno:
+ss -tulpn | grep :8080
 
-# Si es crítico, aumentar EBS volume (requiere downtime)
+# Matar proceso anterior
+pkill -f "server"
+pkill -f "python3"
+
+# Esperar 2 segundos
+sleep 2
+
+# Reiniciar servicios
+cd /home/ubuntu/Codigo
+./server 8080 server.log &
 ```
 
 ---
 
-## Sustentación
+### ❌ **Problema: "No module named 'flask'" o error de módulos Python**
 
-Para demostrar en sustentación:
+**Solución:**
 
-1. **Mostrar instancia corriendo** en AWS Console
-2. **Conectar con SSH** y mostrar procesos:
-   ```bash
-   ps aux | grep "server\|python3"
-   tail -f server.log
-   ```
-3. **Probar desde cliente**:
-   ```bash
-   curl http://<PUBLIC_IP>:5000
-   python3 operator_client.py <PUBLIC_IP> 8080
-   ```
-4. **Mostrar dashboard web** en navegador
-5. **Explicar la arquitectura** y flujo de datos
+```bash
+# Instalar módulos faltantes
+sudo apt install -y python3-flask python3-requests
+
+# O con pip
+pip3 install flask requests
+```
 
 ---
 
-## Siguientes Pasos
+### ❌ **Problema: Compilación falla con errores de C++**
 
-- Implementar autoscaling (Auto Scaling Groups)
-- Agregar RDS para base de datos persistente
-- Usar CloudFront para CDN
-- Implementar CI/CD con CodePipeline
-- Agregar alertas con SNS/Email
+**Solución:**
+
+```bash
+# Verificar que g++ está instalado
+g++ --version
+
+# Si no está, instalar
+sudo apt install -y build-essential
+
+# Recompilar
+cd /home/ubuntu/Codigo
+g++ -std=c++17 -pthread -o server server.cpp
+
+# Si sigue fallando, compilar con debug:
+g++ -std=c++17 -pthread -g -o server server.cpp 2>&1 | tee compile_errors.txt
+```
 
 ---
 
-Última actualización: 14 de Abril de 2026
+### ❌ **Problema: DNS no resuelve ("Name or service not known")**
 
+**Solución:**
 
+```bash
+# Actualizar IP en DuckDNS
+cd /home/ubuntu/Codigo
+./update_dns.sh
 
+# Esperar 5-10 segundos
+sleep 10
 
-cd /home/ec2-user/Codigo
+# Verificar DNS
+nslookup proyectoiota.duckdns.org
+
+# Si sigue sin funcionar, verificar token en update_dns.sh
+cat update_dns.sh | grep DUCKDNS_TOKEN
+```
+
+---
+
+### ❌ **Problema: Los sensores no aparecen en la interfaz web**
+
+**Solución:**
+
+```bash
+# Verificar que sensor_client.py está corriendo
+ps aux | grep sensor_client
+
+# Ver si hay errores en los logs
+tail -f /home/ubuntu/Codigo/sensor_client.log
+
+# Si no hay logs, iniciar sensor_client en Terminal SSH 3
+cd /home/ubuntu/Codigo
+python3 sensor_client.py localhost 8080
+
+# Recargar web (Ctrl+Shift+R en navegador)
+```
+
+---
+
+### ❌ **Problema: Firewall/Security Group bloquea acceso desde navegador**
+
+**Solución:**
+
+1. **En AWS Console:**
+   - Ir a EC2 → Instancias → Seleccionar instancia
+   - Ir a "Security groups" → Click en el group
+   - Click en "Edit inbound rules"
+   - Agregar:
+     - **Type:** Custom TCP
+     - **Port:** 5000
+     - **Source:** 0.0.0.0/0 (o tu IP específica)
+   - Guardar
+
+2. **O desde CLI:**
+   ```bash
+   aws ec2 authorize-security-group-ingress \
+     --group-id sg-xxxxxxxx \
+     --protocol tcp \
+     --port 5000 \
+     --cidr 0.0.0.0/0
+   ```
+
+---
+
+### ❌ **Problema: La IP de EC2 cambió (si detuviste y reiniciaste instancia)**
+
+**Solución:**
+
+```bash
+# El script update_dns.sh detecta automáticamente la nueva IP
+# Solo ejecuta:
+cd /home/ubuntu/Codigo
+./update_dns.sh
+
+# Espera 10 segundos
+sleep 10
+
+# Verifica que la IP se actualizó
+nslookup proyectoiota.duckdns.org
+```
+
+---
+
+### ❌ **Problema: Todos los procesos corriendo pero sin respuesta desde navegador**
+
+**Solución:**
+
+```bash
+# Verificar todos los puertos
+netstat -tuln
+
+# Debe mostrar:
+# tcp  0  0 0.0.0.0:5000   0.0.0.0:*  LISTEN
+# tcp  0  0 0.0.0.0:8080   0.0.0.0:*  LISTEN
+# tcp  0  0 0.0.0.0:9000   0.0.0.0:*  LISTEN
+
+# Probar desde la misma instancia EC2
+curl -I http://localhost:5000/
+
+# Si no responde, ver logs:
+tail -f /home/ubuntu/Codigo/web_interface.log
+
+# Reiniciar web_interface.py en Terminal SSH 4
+pkill -f web_interface
+python3 web_interface.py
+```
+
+---
+
+### ✅ **Verificación Rápida de Todo**
+
+Si algo no funciona, ejecuta esto en **Terminal SSH 5**:
+
+```bash
+#!/bin/bash
+echo "=== PROCESOS ACTIVOS ==="
+ps aux | grep -E "server|python3" | grep -v grep
+
+echo -e "\n=== PUERTOS ESCUCHANDO ==="
+netstat -tuln | grep -E "5000|8080|9000"
+
+echo -e "\n=== SENSORES REGISTRADOS ==="
+grep "REGISTER SENSOR" server.log | wc -l
+
+echo -e "\n=== ÚLTIMO ERROR EN SERVIDOR ==="
+grep "ERROR" server.log | tail -1
+
+echo -e "\n=== ESTADO DNS ==="
+nslookup proyectoiota.duckdns.org 2>&1 | grep -A2 "Address:"
+```
+
+Ejecuta como script:
+```bash
+chmod +x verify_system.sh
+./verify_system.sh
+```
+

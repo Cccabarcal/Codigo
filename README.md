@@ -2,6 +2,14 @@
 
 > Plataforma de monitoreo en tiempo real de sensores IoT distribuidos, con servidor central, múltiples clientes y servicio de autenticación.
 
+## 🌍 **Acceso Remoto en AWS**
+
+**🔗 Dominio DNS (DuckDNS):** [`http://proyectoiota.duckdns.org:5000/`](http://proyectoiota.duckdns.org:5000/)
+
+**Credenciales de acceso:**
+- Usuario: `carlos`
+- Contraseña: `password123`
+
 ## 📑 Tabla de Contenidos
 
 1. [Descripción del Proyecto](#descripción-del-proyecto)
@@ -164,37 +172,37 @@ chmod +x web_interface.py
 
 ## Ejecución Local
 
-### Terminal 1: Iniciar Servidor IoT Central (C++)
+### 🚀 Guía Rápida (Abre 5 Terminales)
 
+#### **Terminal 1: Servidor IoT Central (C++)**
 ```bash
 ./server 8080 server.log
 ```
-
-**Salida esperada**:
+**Salida esperada:**
 ```
 [2026-04-14 10:30:45] [SYSTEM] Servidor escuchando en puerto 8080
 [2026-04-14 10:30:45] [CONN] 0.0.0.0:0 | Servidor iniciado. Log: server.log
 ```
 
-### Terminal 2: Iniciar Servicio de Autenticación (Python)
+---
 
+#### **Terminal 2: Servicio de Autenticación (Python)**
 ```bash
 python3 auth_service.py
 ```
-
-**Salida esperada**:
+**Salida esperada:**
 ```
 [2026-04-14 10:30:46] [INFO] Servicio de Autenticación iniciando en 0.0.0.0:9000
 [2026-04-14 10:30:46] [INFO] Escuchando en 0.0.0.0:9000
 ```
 
-### Terminal 3: Iniciar Sensores Simulados (Python)
+---
 
+#### **Terminal 3: Sensores Simulados (Python)**
 ```bash
 python3 sensor_client.py localhost 8080
 ```
-
-**Salida esperada**:
+**Salida esperada:**
 ```
 [2026-04-14 10:30:47] Cliente Sensor IoT iniciando
 [2026-04-14 10:30:47] Servidor: localhost:8080
@@ -204,29 +212,30 @@ python3 sensor_client.py localhost 8080
 [2026-04-14 10:30:48] [temp-01] ← OK REGISTERED temp-01
 ```
 
-### Terminal 4: Iniciar Cliente Operador (Python GUI)
+---
 
+#### **Terminal 4: Cliente Operador GUI (Python Tkinter)**
 ```bash
 python3 operator_client.py localhost 8080
 ```
+**Resultado esperado:**
+- ✅ Se abre ventana de login
+- Usar: `usuario: carlos` | `contraseña: password123`
+- Después login: ver sensores, mediciones y alertas en tiempo real
 
-**Ventana esperada**:
-- Formulario de login (usuario: `carlos`, contraseña: `password123`)
-- Después del login: panel con sensores, mediciones y alertas
+---
 
-### Terminal 5 (Opcional): Interfaz Web (Python Flask)
-
+#### **Terminal 5 (Opcional): Interfaz Web (Python Flask)**
 ```bash
 python3 web_interface.py
 ```
-
-**Salida esperada**:
+**Salida esperada:**
 ```
 [2026-04-14 10:31:00] INFO Interfaz Web iniciando en 0.0.0.0:5000
 [2026-04-14 10:31:00] INFO Servidor IoT: localhost:8080
+ * Running on http://0.0.0.0:5000
 ```
-
-Acceder en navegador: **http://localhost:5000**
+**Acceder:** Abrir navegador en `http://localhost:5000`
 
 ---
 
@@ -357,11 +366,13 @@ server: ELF 64-bit LSB executable, x86-64, version 1
 
 ---
 
-### Paso 6: Ejecutar los Servicios (4 Terminales SSH)
+### Paso 6: Ejecutar los Servicios (Abre 4 Terminales SSH)
 
-Abre **4 conexiones SSH diferentes** a tu instancia EC2.
+Abre **4 conexiones SSH diferentes** a tu instancia EC2. En cada una, ejecuta:
 
-#### **Terminal 1: Servidor IoT Central (C++)**
+---
+
+#### **Terminal SSH 1: Servidor IoT Central (C++)**
 
 ```bash
 cd /home/ubuntu/Codigo
@@ -371,11 +382,14 @@ cd /home/ubuntu/Codigo
 **Salida esperada:**
 ```
 [2026-04-20 01:33:00] [SYSTEM] 0.0.0.0:8080 | Servidor escuchando en puerto 8080
+[2026-04-20 01:33:00] [CONN] Esperando conexiones...
 ```
+
+**⏸️ DEJAR ESTA TERMINAL ABIERTA Y SIN CERRAR**
 
 ---
 
-#### **Terminal 2: Servicio de Autenticación (Python)**
+#### **Terminal SSH 2: Servicio de Autenticación (Python)**
 
 ```bash
 cd /home/ubuntu/Codigo
@@ -385,11 +399,14 @@ python3 auth_service.py
 **Salida esperada:**
 ```
 [2026-04-20 01:33:01] [INFO] Escuchando en 0.0.0.0:9000
+[2026-04-20 01:33:01] [INFO] Servicio de Autenticación listo
 ```
+
+**⏸️ DEJAR ESTA TERMINAL ABIERTA Y SIN CERRAR**
 
 ---
 
-#### **Terminal 3: Clientes Sensor (Python)**
+#### **Terminal SSH 3: Clientes Sensor (Python)**
 
 ```bash
 cd /home/ubuntu/Codigo
@@ -404,9 +421,11 @@ python3 sensor_client.py localhost 8080
 [2026-04-20 01:33:05] [DEBUG] [temp-01] ← OK
 ```
 
+**⏸️ DEJAR ESTA TERMINAL ABIERTA Y SIN CERRAR**
+
 ---
 
-#### **Terminal 4: Interfaz Web Flask (Python)**
+#### **Terminal SSH 4: Interfaz Web Flask (Python)**
 
 ```bash
 cd /home/ubuntu/Codigo
@@ -420,29 +439,41 @@ WARNING: This is a development server.
  * Running on http://0.0.0.0:5000
 ```
 
+**⏸️ DEJAR ESTA TERMINAL ABIERTA Y SIN CERRAR**
+
 ---
 
-### Paso 7: Verificar que Todo Funciona (Terminal 5)
+### Paso 7: Verificar que Todo Funciona (Terminal SSH 5)
 
-Abre una **5ª conexión SSH** para verificación:
+Abre una **5ª conexión SSH** (sin cerrar las anteriores):
 
 ```bash
-# Ver procesos activos
+ssh -i ~/.ssh/iot-key.pem ubuntu@<PUBLIC_IP>
+```
+
+**Ejecuta estos comandos de verificación:**
+
+---
+
+#### Verificar Procesos Activos
+
+```bash
 ps aux | grep -E "server|python3" | grep -v grep
 ```
 
 Debería mostrar:
 ```
-./server 8080 server.log
-python3 auth_service.py
-python3 sensor_client.py localhost 8080
-python3 web_interface.py
+ubuntu  1234  0.1  0.5 123456 45678 ?  Sl  01:33  0:01 ./server 8080 server.log
+ubuntu  1235  0.0  1.2 234567 56789 ?  S   01:33  0:00 python3 auth_service.py
+ubuntu  1236  0.0  1.1 234567 56789 ?  S   01:33  0:00 python3 sensor_client.py
+ubuntu  1237  0.0  1.3 234567 56789 ?  S   01:33  0:00 python3 web_interface.py
 ```
 
 ---
 
+#### Verificar Puertos Escuchando
+
 ```bash
-# Ver puertos escuchando
 netstat -tuln | grep -E "5000|8080|9000"
 ```
 
@@ -455,23 +486,42 @@ tcp    0    0 0.0.0.0:9000    0.0.0.0:*    LISTEN
 
 ---
 
+#### Verificar Sensores Registrados
+
 ```bash
-# Ver si hay sensores registrados
 grep "REGISTER SENSOR" /home/ubuntu/Codigo/server.log | head -5
 ```
 
-Debería mostrar:
+Debería mostrar (6 sensores):
 ```
 [2026-04-20 01:33:02] [DEBUG] temp-01 REGISTER SENSOR
 [2026-04-20 01:33:02] [DEBUG] temp-02 REGISTER SENSOR
 [2026-04-20 01:33:03] [DEBUG] humid-01 REGISTER SENSOR
+[2026-04-20 01:33:03] [DEBUG] press-01 REGISTER SENSOR
+[2026-04-20 01:33:04] [DEBUG] vibra-01 REGISTER SENSOR
+[2026-04-20 01:33:04] [DEBUG] energy-01 REGISTER SENSOR
+```
+
+---
+
+#### Verificar Mediciones Llegando
+
+```bash
+grep "MEASURE" /home/ubuntu/Codigo/server.log | head -3
+```
+
+Debería mostrar:
+```
+[2026-04-20 01:33:05] [DEBUG] temp-01 MEASURE 23.5
+[2026-04-20 01:33:05] [DEBUG] temp-02 MEASURE 24.1
+[2026-04-20 01:33:06] [DEBUG] humid-01 MEASURE 65.3
 ```
 
 ---
 
 ### Paso 8: Acceder a la Interfaz Web
 
-Desde **tu navegador** (en tu máquina local):
+Desde **tu navegador en máquina local**:
 
 ```
 http://<PUBLIC_IP>:5000
@@ -482,65 +532,234 @@ http://<PUBLIC_IP>:5000
 http://54.242.32.222:5000
 ```
 
-**Login con:**
+**Credenciales de login:**
 - Usuario: `carlos`
 - Contraseña: `password123`
 
 **Verás:**
-- ✅ Lista de sensores activos
-- ✅ Mediciones en tiempo real
-- ✅ Alertas si hay valores anómalos
+- ✅ Tabla con 6 sensores activos
+- ✅ Mediciones en tiempo real actualizándose
+- ✅ Alertas si algún valor está fuera de rango
+- ✅ Historial de mediciones por sensor
 
 ---
 
-### Paso 9: Monitoreo y Logs en Vivo
+### Paso 9: Monitoreo en Vivo de Logs
 
-En **Terminal 5**, ver logs en tiempo real:
+En **Terminal 5**, puedes ver logs en tiempo real:
 
 ```bash
-# Ver logs del servidor
+# Ver logs del servidor (nuevas líneas)
 tail -f /home/ubuntu/Codigo/server.log
+```
 
-# En otra terminal: Ver logs de sensores
+O abre nuevas terminales para cada log:
+
+```bash
+# Terminal 6: Logs de sensores
 tail -f /home/ubuntu/Codigo/sensor_client.log
 
-# En otra terminal: Ver logs de web
+# Terminal 7: Logs de auth
+tail -f /home/ubuntu/Codigo/auth_service.log
+
+# Terminal 8: Logs de web
 tail -f /home/ubuntu/Codigo/web_interface.log
 ```
 
 ---
 
-### Paso 10: Configurar DNS (Route 53) - Opcional
+### Paso 10: Configurar DNS con DuckDNS (RECOMENDADO - GRATUITO)
 
-Para acceder con un dominio en lugar de IP:
+**DuckDNS** permite acceder a tu servidor usando un dominio en lugar de IP, **completamente gratis**.
 
-1. Ir a **AWS Route 53**
-2. **Crear Hosted Zone** con tu dominio
-3. **Crear registro A** que apunte a la **IP pública de EC2**
-4. Esperar propagación DNS (15-30 min)
+#### 10.1: Registrarse en DuckDNS (en tu navegador)
 
-Luego acceder:
+```bash
+# Ir a https://www.duckdns.org
+# 1. Hacer clic en "Sign in" (usar Google/GitHub)
+# 2. Crear subdominio: proyectoiota
+# 3. Copiar el TOKEN (cadena larga de caracteres)
 ```
-http://tudominio.com:5000
+
+**✅ YA CONFIGURADO:**
+- Dominio: `proyectoiota.duckdns.org`
+- Acceso: http://proyectoiota.duckdns.org:5000/
+
+---
+
+#### 10.2: Crear Script de Actualización DNS (en tu máquina local)
+
+```bash
+cat > update_dns.sh << 'EOF'
+#!/bin/bash
+DUCKDNS_TOKEN="tu_token_aqui"
+DUCKDNS_DOMAIN="proyectoiota"
+IP_PUBLICA=$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+curl -s "https://www.duckdns.org/update?domains=${DUCKDNS_DOMAIN}&token=${DUCKDNS_TOKEN}&ip=${IP_PUBLICA}"
+echo "[$(date)] IP actualizada: $IP_PUBLICA"
+EOF
+
+chmod +x update_dns.sh
 ```
+
+---
+
+#### 10.3: Subir Script a EC2 (desde tu máquina local)
+
+```bash
+# En tu máquina local
+scp -i ~/.ssh/iot-key.pem update_dns.sh ubuntu@<PUBLIC_IP>:~/Codigo/
+```
+
+---
+
+#### 10.4: Ejecutar Script en EC2 (Terminal SSH 5)
+
+```bash
+# En Terminal SSH 5 (la que usas para verificar)
+ssh -i ~/.ssh/iot-key.pem ubuntu@<PUBLIC_IP>
+
+cd ~/Codigo
+./update_dns.sh
+```
+
+**Salida esperada:**
+```
+[2026-04-20 01:45:00] IP actualizada: 54.242.32.222
+```
+
+---
+
+#### 10.5: Verificar que DNS Está Resuelto (Terminal SSH 5)
+
+```bash
+# Esperar 5-10 segundos
+sleep 10
+
+# Verificar DNS
+nslookup proyectoiota.duckdns.org
+```
+
+**Salida esperada:**
+```
+Server:    127.0.0.53
+Address:   127.0.0.53#53
+
+Non-authoritative answer:
+Name:   proyectoiota.duckdns.org
+Address: 54.242.32.222
+```
+
+**Si muestra la IP pública de tu EC2, ¡DNS está funcionando!** ✅
+
+---
+
+#### 10.6: Configurar Actualización Automática con Cron (Terminal SSH 5)
+
+```bash
+# En EC2, editar crontab
+crontab -e
+
+# Añadir esta línea al final:
+*/5 * * * * /home/ubuntu/Codigo/update_dns.sh >> /home/ubuntu/Codigo/dns_update.log 2>&1
+```
+
+Esto actualiza automáticamente la IP cada 5 minutos.
+
+---
+
+#### 10.7: Acceder por Dominio (desde tu navegador)
+
+```
+http://proyectoiota.duckdns.org:5000
+```
+
+**Debería mostrar:**
+- ✅ Página de login
+- ✅ Login con carlos/password123
+- ✅ 6 sensores activos
+- ✅ Mediciones en tiempo real
+
+---
+
+### Paso 11: Verificación Completa del DNS (Terminal SSH 5)
+
+```bash
+# Desde tu máquina local, verificar DNS
+nslookup proyectoiota.duckdns.org
+```
+
+```bash
+# Probar conectividad HTTP
+curl -I http://proyectoiota.duckdns.org:5000
+```
+
+**Salida esperada:**
+```
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=utf-8
+```
+
+```bash
+# Probar puerto 8080 (IoT Server)
+nc -zv proyectoiota.duckdns.org 8080
+```
+
+**Salida esperada:**
+```
+Connection to proyectoiota.duckdns.org 8080 port [tcp/*] succeeded!
+```
+
+---
+
+### ✅ Sistema Completamente Funcional
+
+Si llegaste aquí y todo funciona:
+
+| Verificación | Estado |
+|---|---|
+| ✅ Terminal SSH 1: Servidor corriendo | `ps aux \| grep server` |
+| ✅ Terminal SSH 2: Auth funcionando | `ps aux \| grep auth_service` |
+| ✅ Terminal SSH 3: Sensores enviando | Ver logs en `server.log` |
+| ✅ Terminal SSH 4: Web respondiendo | `curl -I http://localhost:5000` |
+| ✅ DNS resolviendo | `nslookup proyectoiota.duckdns.org` |
+| ✅ Acceso remoto | http://proyectoiota.duckdns.org:5000 |
+
+**🎉 ¡Proyecto completamente deployado en AWS!** 🚀
 
 ---
 
 ### Troubleshooting en AWS
 
-#### **"Connection refused"**
+#### ❌ **Problema: "Connection refused" en Terminal SSH 1**
+
+**Solución:**
+
 ```bash
 # Verificar que el servidor está corriendo
 ps aux | grep server
+
+# Si no está corriendo, iniciar manualmente
+cd /home/ubuntu/Codigo
+./server 8080 server.log
 ```
 
-#### **"Port already in use"**
+---
+
+#### ❌ **Problema: "Address already in use" al compilar/ejecutar**
+
+**Solución:**
+
 ```bash
-# Matar procesos anteriores
-pkill -f server
-pkill -f auth_service
-pkill -f sensor_client
-pkill -f web_interface
+# Encontrar proceso en puerto 8080
+lsof -i :8080
+
+# O en Ubuntu moderno:
+ss -tulpn | grep :8080
+
+# Matar proceso anterior
+pkill -f "server"
+pkill -f "python3"
 
 # Esperar 2 segundos
 sleep 2
@@ -548,25 +767,182 @@ sleep 2
 # Reiniciar servicios
 cd /home/ubuntu/Codigo
 ./server 8080 server.log &
-sleep 2
-python3 auth_service.py &
 ```
 
-#### **"No module named 'flask'"**
+---
+
+#### ❌ **Problema: "No module named 'flask'" o error de módulos Python**
+
+**Solución:**
+
 ```bash
+# Instalar módulos faltantes
 sudo apt install -y python3-flask python3-requests
+
+# O con pip
+pip3 install flask requests
 ```
 
-#### **Compilación falla**
+---
+
+#### ❌ **Problema: Compilación falla con errores de C++**
+
+**Solución:**
+
 ```bash
-# Verificar g++
+# Verificar que g++ está instalado
 g++ --version
 
-# Asegurarse de tener build-essential
+# Si no está, instalar
 sudo apt install -y build-essential
 
 # Recompilar
+cd /home/ubuntu/Codigo
 g++ -std=c++17 -pthread -o server server.cpp
+
+# Si sigue fallando, compilar con debug:
+g++ -std=c++17 -pthread -g -o server server.cpp 2>&1 | tee compile_errors.txt
+```
+
+---
+
+#### ❌ **Problema: DNS no resuelve ("Name or service not known")**
+
+**Solución:**
+
+```bash
+# Actualizar IP en DuckDNS
+cd /home/ubuntu/Codigo
+./update_dns.sh
+
+# Esperar 5-10 segundos
+sleep 10
+
+# Verificar DNS
+nslookup proyectoiota.duckdns.org
+
+# Si sigue sin funcionar, verificar token en update_dns.sh
+cat update_dns.sh | grep DUCKDNS_TOKEN
+```
+
+---
+
+#### ❌ **Problema: Los sensores no aparecen en la interfaz web**
+
+**Solución:**
+
+```bash
+# Verificar que sensor_client.py está corriendo
+ps aux | grep sensor_client
+
+# Ver si hay errores en los logs
+tail -f /home/ubuntu/Codigo/sensor_client.log
+
+# Si no hay logs, iniciar sensor_client en Terminal SSH 3
+cd /home/ubuntu/Codigo
+python3 sensor_client.py localhost 8080
+
+# Recargar web (Ctrl+Shift+R en navegador)
+```
+
+---
+
+#### ❌ **Problema: Firewall/Security Group bloquea acceso desde navegador**
+
+**Solución:**
+
+1. **En AWS Console:**
+   - Ir a EC2 → Instancias → Seleccionar instancia
+   - Ir a "Security groups" → Click en el group
+   - Click en "Edit inbound rules"
+   - Agregar:
+     - **Type:** Custom TCP
+     - **Port:** 5000
+     - **Source:** 0.0.0.0/0 (o tu IP específica)
+   - Guardar
+
+2. **O desde CLI:**
+   ```bash
+   aws ec2 authorize-security-group-ingress \
+     --group-id sg-xxxxxxxx \
+     --protocol tcp \
+     --port 5000 \
+     --cidr 0.0.0.0/0
+   ```
+
+---
+
+#### ❌ **Problema: La IP de EC2 cambió (si detuviste y reiniciaste instancia)**
+
+**Solución:**
+
+```bash
+# El script update_dns.sh detecta automáticamente la nueva IP
+# Solo ejecuta:
+cd /home/ubuntu/Codigo
+./update_dns.sh
+
+# Espera 10 segundos
+sleep 10
+
+# Verifica que la IP se actualizó
+nslookup miproyectoiot.duckdns.org
+```
+
+---
+
+#### ❌ **Problema: Todos los procesos corriendo pero sin respuesta desde navegador**
+
+**Solución:**
+
+```bash
+# Verificar todos los puertos
+netstat -tuln
+
+# Debe mostrar:
+# tcp  0  0 0.0.0.0:5000   0.0.0.0:*  LISTEN
+# tcp  0  0 0.0.0.0:8080   0.0.0.0:*  LISTEN
+# tcp  0  0 0.0.0.0:9000   0.0.0.0:*  LISTEN
+
+# Probar desde la misma instancia EC2
+curl -I http://localhost:5000/
+
+# Si no responde, ver logs:
+tail -f /home/ubuntu/Codigo/web_interface.log
+
+# Reiniciar web_interface.py en Terminal SSH 4
+pkill -f web_interface
+python3 web_interface.py
+```
+
+---
+
+#### ✅ **Verificación Rápida de Todo**
+
+Si algo no funciona, ejecuta esto en **Terminal SSH 5**:
+
+```bash
+#!/bin/bash
+echo "=== PROCESOS ACTIVOS ==="
+ps aux | grep -E "server|python3" | grep -v grep
+
+echo -e "\n=== PUERTOS ESCUCHANDO ==="
+netstat -tuln | grep -E "5000|8080|9000"
+
+echo -e "\n=== SENSORES REGISTRADOS ==="
+grep "REGISTER SENSOR" server.log | wc -l
+
+echo -e "\n=== ÚLTIMO ERROR EN SERVIDOR ==="
+grep "ERROR" server.log | tail -1
+
+echo -e "\n=== ESTADO DNS ==="
+nslookup proyectoiota.duckdns.org 2>&1 | grep -A2 "Address:"
+```
+
+Ejecuta como script:
+```bash
+chmod +x verify_system.sh
+./verify_system.sh
 ```
 
 ---
