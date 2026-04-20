@@ -230,93 +230,348 @@ Acceder en navegador: **http://localhost:5000**
 
 ---
 
-## Despliegue en AWS
+## Despliegue en AWS - Guía Paso a Paso
 
 ### Paso 1: Crear Instancia EC2
 
-1. Ir a AWS Console → EC2 → Launch Instance
-2. Seleccionar: **Amazon Linux 2** (o Ubuntu 20.04 LTS)
-3. Tipo: `t2.micro` (Free Tier elegible)
-4. Configurar Security Group:
-   - Puerto 8080 (IoT Server): Origen 0.0.0.0/0
-   - Puerto 9000 (Auth Service): Origen 0.0.0.0/0
-   - Puerto 5000 (Web Interface): Origen 0.0.0.0/0
-   - Puerto 22 (SSH): Origen _(tu IP)_
-5. Crear/seleccionar Key Pair
-6. Launch
+1. Ir a **AWS Console** → **EC2** → **Launch Instance**
+2. Seleccionar: **Ubuntu 22.04 LTS** (Free Tier elegible)
+3. Tipo de Instancia: **t2.micro**
+4. Configurar **Security Group** con estos puertos:
+   - Puerto **22** (SSH): Origen tu IP
+   - Puerto **8080** (IoT Server): Origen 0.0.0.0/0
+   - Puerto **9000** (Auth Service): Origen 0.0.0.0/0
+   - Puerto **5000** (Web Interface): Origen 0.0.0.0/0
+5. Crear/seleccionar **Key Pair** (.pem)
+6. Hacer clic en **Launch**
 
-### Paso 2: Conectarse a la Instancia
+---
+
+### Paso 2: Conectar a la Instancia por SSH
+
+Desde **tu máquina local** (PowerShell/Terminal):
 
 ```bash
-# Cambiar permisos de key
-chmod 400 my-key.pem
+# Cambiar permisos del archivo de key (IMPORTANTE)
+chmod 400 ~/.ssh/iot-key.pem
 
-# Conectarse por SSH
-ssh -i my-key.pem ec2-user@<PUBLIC_IP>  # Amazon Linux
-ssh -i my-key.pem ubuntu@<PUBLIC_IP>     # Ubuntu
+# Conectar por SSH (obtén PUBLIC_IP de AWS Console)
+ssh -i ~/.ssh/iot-key.pem ubuntu@<PUBLIC_IP>
 ```
 
-### Paso 3: Preparar Servidor EC2
+**Ejemplo:**
+```bash
+ssh -i ~/.ssh/iot-key.pem ubuntu@54.242.32.222
+```
+
+Deberías ver algo como:
+```
+ubuntu@ip-172-31-44-89:~$
+```
+
+---
+
+### Paso 3: Actualizar Sistema e Instalar Dependencias
+
+En **la instancia EC2**, ejecuta:
 
 ```bash
 # Actualizar sistema
-sudo yum update -y  # Amazon Linux
-sudo apt update && sudo apt upgrade -y  # Ubuntu
+sudo apt update
+sudo apt upgrade -y
 
-# Instalar dependencias
-sudo yum install gcc-c++ make  # Amazon Linux
-sudo apt install build-essential  # Ubuntu
+# Instalar compilador C++
+sudo apt install -y build-essential
 
-sudo yum install python3 python3-pip  # Amazon Linux
-sudo apt install python3 python3-pip  # Ubuntu
+# Instalar Python y pip
+sudo apt install -y python3 python3-pip
 
-# Instalar Flask
-python3 -m pip install flask
+# Instalar librerías Python necesarias
+sudo apt install -y python3-flask python3-dev python3-requests
 ```
 
-### Paso 4: Subir Archivos
-
+**Verificar instalaciones:**
 ```bash
-# Desde tu máquina local
-scp -i my-key.pem server.cpp ec2-user@<PUBLIC_IP>:~/
-scp -i my-key.pem *.py ec2-user@<PUBLIC_IP>:~/
-scp -i my-key.pem users.json ec2-user@<PUBLIC_IP>:~/
-scp -i my-key.pem -r templates/ ec2-user@<PUBLIC_IP>:~/
-
-# O usar Git
-ssh -i my-key.pem ec2-user@<PUBLIC_IP>
-cd ~ && git clone <REPO_URL>
+g++ --version
+python3 --version
+python3 -c "import flask; print(flask.__version__)"
 ```
 
-### Paso 5: Compilar y Ejecutar en EC2
+---
+
+### Paso 4: Clonar el Repositorio
+
+En **la instancia EC2**:
 
 ```bash
-# En la instancia EC2
+# Crear directorio
+mkdir -p /home/ubuntu/Codigo
+
+# Navegar
+cd /home/ubuntu/Codigo
+
+# Clonar desde GitHub (si tienes configurado git)
+git clone <URL_DE_TU_REPOSITORIO>
+
+# O si está todo en una carpeta
+cd Codigo
+
+# Verificar que están todos los archivos
+ls -la
+```
+
+Deberías ver:
+```
+server.cpp
+Logger.h
+protocol.h
+auth_service.py
+sensor_client.py
+operator_client.py
+web_interface.py
+users.json
+```
+
+---
+
+### Paso 5: Compilar el Servidor C++
+
+En **la instancia EC2**:
+
+```bash
+cd /home/ubuntu/Codigo
+
+# Compilar
 g++ -std=c++17 -pthread -o server server.cpp
 
-# Terminal 1: Servidor
-nohup ./server 8080 server.log > server_output.log 2>&1 &
-
-# Terminal 2: Auth
-nohup python3 auth_service.py > auth_output.log 2>&1 &
-
-# Terminal 3: Sensores
-nohup python3 sensor_client.py <PUBLIC_IP> 8080 > sensors_output.log 2>&1 &
-
-# Terminal 4: Web
-nohup python3 web_interface.py > web_output.log 2>&1 &
+# Verificar que compiló correctamente
+ls -la server
+file server
 ```
 
-### Paso 6: Configurar DNS (Route 53)
+**Salida esperada:**
+```
+-rwxr-xr-x 1 ubuntu ubuntu 45000 Apr 20 01:30 server
+server: ELF 64-bit LSB executable, x86-64, version 1
+```
 
-1. Ir a AWS Route 53
-2. Crear Hosted Zone: `midominio.com`
-3. Crear registro A que apunte a IP pública de EC2
+---
+
+### Paso 6: Ejecutar los Servicios (4 Terminales SSH)
+
+Abre **4 conexiones SSH diferentes** a tu instancia EC2.
+
+#### **Terminal 1: Servidor IoT Central (C++)**
+
+```bash
+cd /home/ubuntu/Codigo
+./server 8080 server.log
+```
+
+**Salida esperada:**
+```
+[2026-04-20 01:33:00] [SYSTEM] 0.0.0.0:8080 | Servidor escuchando en puerto 8080
+```
+
+---
+
+#### **Terminal 2: Servicio de Autenticación (Python)**
+
+```bash
+cd /home/ubuntu/Codigo
+python3 auth_service.py
+```
+
+**Salida esperada:**
+```
+[2026-04-20 01:33:01] [INFO] Escuchando en 0.0.0.0:9000
+```
+
+---
+
+#### **Terminal 3: Clientes Sensor (Python)**
+
+```bash
+cd /home/ubuntu/Codigo
+python3 sensor_client.py localhost 8080
+```
+
+**Salida esperada:**
+```
+[2026-04-20 01:33:02] [DEBUG] [temp-01] → REGISTER SENSOR temp-01 temperature celsius
+[2026-04-20 01:33:02] [DEBUG] [temp-01] ← OK REGISTERED temp-01
+[2026-04-20 01:33:05] [DEBUG] [temp-01] → MEASURE temp-01 23.5 2026-04-20T01:33:05Z
+[2026-04-20 01:33:05] [DEBUG] [temp-01] ← OK
+```
+
+---
+
+#### **Terminal 4: Interfaz Web Flask (Python)**
+
+```bash
+cd /home/ubuntu/Codigo
+python3 web_interface.py
+```
+
+**Salida esperada:**
+```
+[2026-04-20 01:33:06] [INFO] Interfaz Web iniciando en 0.0.0.0:5000
+WARNING: This is a development server.
+ * Running on http://0.0.0.0:5000
+```
+
+---
+
+### Paso 7: Verificar que Todo Funciona (Terminal 5)
+
+Abre una **5ª conexión SSH** para verificación:
+
+```bash
+# Ver procesos activos
+ps aux | grep -E "server|python3" | grep -v grep
+```
+
+Debería mostrar:
+```
+./server 8080 server.log
+python3 auth_service.py
+python3 sensor_client.py localhost 8080
+python3 web_interface.py
+```
+
+---
+
+```bash
+# Ver puertos escuchando
+netstat -tuln | grep -E "5000|8080|9000"
+```
+
+Debería mostrar:
+```
+tcp    0    0 0.0.0.0:5000    0.0.0.0:*    LISTEN
+tcp    0    0 0.0.0.0:8080    0.0.0.0:*    LISTEN
+tcp    0    0 0.0.0.0:9000    0.0.0.0:*    LISTEN
+```
+
+---
+
+```bash
+# Ver si hay sensores registrados
+grep "REGISTER SENSOR" /home/ubuntu/Codigo/server.log | head -5
+```
+
+Debería mostrar:
+```
+[2026-04-20 01:33:02] [DEBUG] temp-01 REGISTER SENSOR
+[2026-04-20 01:33:02] [DEBUG] temp-02 REGISTER SENSOR
+[2026-04-20 01:33:03] [DEBUG] humid-01 REGISTER SENSOR
+```
+
+---
+
+### Paso 8: Acceder a la Interfaz Web
+
+Desde **tu navegador** (en tu máquina local):
+
+```
+http://<PUBLIC_IP>:5000
+```
+
+**Ejemplo:**
+```
+http://54.242.32.222:5000
+```
+
+**Login con:**
+- Usuario: `carlos`
+- Contraseña: `password123`
+
+**Verás:**
+- ✅ Lista de sensores activos
+- ✅ Mediciones en tiempo real
+- ✅ Alertas si hay valores anómalos
+
+---
+
+### Paso 9: Monitoreo y Logs en Vivo
+
+En **Terminal 5**, ver logs en tiempo real:
+
+```bash
+# Ver logs del servidor
+tail -f /home/ubuntu/Codigo/server.log
+
+# En otra terminal: Ver logs de sensores
+tail -f /home/ubuntu/Codigo/sensor_client.log
+
+# En otra terminal: Ver logs de web
+tail -f /home/ubuntu/Codigo/web_interface.log
+```
+
+---
+
+### Paso 10: Configurar DNS (Route 53) - Opcional
+
+Para acceder con un dominio en lugar de IP:
+
+1. Ir a **AWS Route 53**
+2. **Crear Hosted Zone** con tu dominio
+3. **Crear registro A** que apunte a la **IP pública de EC2**
 4. Esperar propagación DNS (15-30 min)
 
-**Acceder después**:
-- Web: `http://midominio.com:5000`
-- Server: `midominio.com:8080`
+Luego acceder:
+```
+http://tudominio.com:5000
+```
+
+---
+
+### Troubleshooting en AWS
+
+#### **"Connection refused"**
+```bash
+# Verificar que el servidor está corriendo
+ps aux | grep server
+```
+
+#### **"Port already in use"**
+```bash
+# Matar procesos anteriores
+pkill -f server
+pkill -f auth_service
+pkill -f sensor_client
+pkill -f web_interface
+
+# Esperar 2 segundos
+sleep 2
+
+# Reiniciar servicios
+cd /home/ubuntu/Codigo
+./server 8080 server.log &
+sleep 2
+python3 auth_service.py &
+```
+
+#### **"No module named 'flask'"**
+```bash
+sudo apt install -y python3-flask python3-requests
+```
+
+#### **Compilación falla**
+```bash
+# Verificar g++
+g++ --version
+
+# Asegurarse de tener build-essential
+sudo apt install -y build-essential
+
+# Recompilar
+g++ -std=c++17 -pthread -o server server.cpp
+```
+
+---
+
+## Configuración DNS (Route 53)
 
 ---
 
