@@ -581,4 +581,4 @@ Para demostrar en sustentación:
 
 
 
-cd /home/ec2-user/iot-project/Codigo
+cd /home/ec2-user/Codigo
