@@ -2,102 +2,64 @@
 
 ## 📝 Resumen Ejecutivo
 
-Has completado el desarrollo del **Sistema Distribuido de Monitoreo de Sensores IoT**. Este documento te guía paso a paso para:
+Has completado el desarrollo del **Sistema Distribuido de Monitoreo de Sensores IoT**. 
 
-1. **Limpiar y validar** el proyecto localmente
-2. **Hacer un commit final** a git
-3. **Desplegar en AWS** mediante git clone
-4. **Verificar que todo funciona**
+**IMPORTANTE**: El servidor C++ está optimizado para compilar en **Linux/AWS EC2**, no en Windows.
 
 ---
 
-## ⚡ PASO 1: PREPARACIÓN LOCAL (5 minutos)
+## ✅ CAMBIOS REALIZADOS (19 de Abril de 2026)
 
-### Opción A: Windows (PowerShell)
+### 1. Limpieza de Versiones
+- ✅ Renombrado `server_final.cpp` → `server_final.cpp.bak`
+- ✅ Renombrado `server_simple.cpp` → `server_simple.cpp.bak`
+- ✅ Mantenido `server.cpp` como versión única oficial
+
+### 2. Configuración sin IPs Hardcodeadas
+- ✅ **web_interface.py**: Actualizado para usar variables de entorno
+  - `IOT_SERVER_HOST` (default: localhost)
+  - `IOT_SERVER_PORT` (default: 8080)
+  - `AUTH_SERVER_HOST` (default: localhost)
+  - `AUTH_SERVER_PORT` (default: 9000)
+- ✅ **sensor_client.py**: Ya usa argumentos de línea de comandos
+- ✅ **operator_client.py**: Ya usa argumentos de línea de comandos
+
+### 3. Dependencias Python Actualizadas
+- ✅ flask: 2.3.2 → **3.0.0** (versión actual)
+- ✅ Werkzeug: 2.3.6 → **3.0.0** (versión actual)
+- ✅ Agregado: **requests==2.31.0** (para HTTP calls)
+
+### 4. Resolución DNS Implementada
+- ✅ `server.cpp` ya incluye `getaddrinfo()` para resolución de nombres
+- ✅ Manejo de errores de DNS (no termina el servidor si falla)
+
+---
+
+## ⚡ PASO 1: VERIFICAR CAMBIOS LOCALMENTE
+
+### En Windows (PowerShell)
 
 ```powershell
 cd D:\Users\Cristian\Desktop\telematica\Codigo
 
-# Ejecutar script de preparación
-.\prepare_deployment.ps1
+# Ver cambios
+git status
+
+# Verificar que los archivos se actualizaron
+ls server*.cpp*
+# Deberías ver:
+# - server.cpp (versión actual)
+# - server_final.cpp.bak (backup)
+# - server_simple.cpp.bak (backup)
+
+# Ver cambios en archivos
+git diff requirements.txt
+git diff web_interface.py
 ```
-
-### Opción B: Linux/macOS (Bash)
-
-```bash
-cd ~/Desktop/telematica/Codigo
-
-# Ejecutar script de preparación
-bash prepare_deployment.sh
-```
-
-**Qué hace este script:**
-- ✅ Elimina logs temporales
-- ✅ Limpia Python cache
-- ✅ Verifica que todos los archivos requeridos existan
-- ✅ Compila el servidor (si g++ está disponible)
-- ✅ Muestra estadísticas del proyecto
 
 ---
 
-## 💾 PASO 2: COMMIT A GIT
-
-### 2.1 Revisar cambios
-
-```bash
-git status
-```
-
-Debería mostrar algo como:
-```
-modified:   server.cpp
-modified:   CHECKLIST_FINAL.md
-new file:   prepare_deployment.sh
-new file:   prepare_deployment.ps1
-new file:   FINAL_DEPLOYMENT.md
-```
-
-### 2.2 Agregar todos los cambios
-
-```bash
-git add -A
-```
-
-### 2.3 Hacer commit con mensaje descriptivo
-
-```bash
-git commit -m "Proyecto I Final: Sistema IoT Distribuido
-
-Implementación completa de:
-- Servidor C++ multi-cliente (puerto 8080)
-- Servicio de autenticación (puerto 9000)
-- Interfaz web Flask (puerto 5000)
-- Cliente GUI con Tkinter
-- Simulador de 6 sensores IoT
-
-Características:
-- Protocolo de aplicación basado en texto
-- Logging exhaustivo (consola + archivo)
-- Manejo de múltiples clientes con threads
-- Validación de umbrales y alertas
-- Autenticación contra servicio externo
-- 1500+ líneas de código fuente
-
-Despliegue en AWS:
-- EC2 Ubuntu 22.04
-- Compilación C++17 con pthread
-- Todos los servicios ejecutables
-
-Status: ✅ Listo para sustentación"
-```
-
-### 2.4 Verificar que se hizo commit
-
-```bash
-git log --oneline | head -1
-```
-
-Debería mostrar tu commit más reciente.
+## 💾 PASO 2: COMMIT A GIT (IMPORTANTE)
 
 ---
 
@@ -477,7 +439,3 @@ Una vez que todos los servicios estén ejecutándose y verificados:
 
 **Tu proyecto está listo para presentación.**
 
----
-
-**Actualización:** 14 de Abril de 2026  
-**Estado:** 🟢 LISTO PARA PRODUCCIÓN

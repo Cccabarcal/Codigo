@@ -113,11 +113,17 @@ bool authenticate_user(const std::string& user,
  
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) return false;
- 
-    struct timeval tv{3, 0};  // timeout 3s
-    setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &tv, sizeof(tv));
-    setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, &tv, sizeof(tv));
- 
+
+    #ifdef _WIN32
+        DWORD timeout = 3000;  // 3 segundos en milisegundos
+        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
+        setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (const char*)&timeout, sizeof(timeout));
+    #else
+        struct timeval tv{3, 0};  // timeout 3s
+        setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, (const char*)&tv, sizeof(tv));
+        setsockopt(sock, SOL_SOCKET, SO_SNDTIMEO, (const char*)&tv, sizeof(tv));
+    #endif
+
     struct sockaddr_in auth_addr{};
     auth_addr.sin_family = AF_INET;
     auth_addr.sin_port   = htons(AUTH_PORT);
@@ -220,7 +226,7 @@ void handle_client(int client_fd, struct sockaddr_in client_addr) {
         
         ssize_t n = recv(client_fd, buf, sizeof(buf) - 1, 0);
         
-        fprintf(stderr, "[HANDLE CLIENT] Recv retornó n=%ld fd=%d\n", n, client_fd);
+        fprintf(stderr, "[HANDLE CLIENT] Recv retornó n=%lld fd=%d\n", (long long)n, client_fd);
         fflush(stderr);
         
         if (n <= 0) {
@@ -450,7 +456,9 @@ int main(int argc, char* argv[]) {
  
     signal(SIGINT,  handle_signal);
     signal(SIGTERM, handle_signal);
-    signal(SIGPIPE, SIG_IGN);  // evita crash si el cliente cierra la conexión
+    #ifndef _WIN32
+        signal(SIGPIPE, SIG_IGN);  // evita crash si el cliente cierra la conexión (solo en UNIX)
+    #endif
  
     // ── Crear socket TCP ──────────────────────────────────────────────────
     server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -460,7 +468,11 @@ int main(int argc, char* argv[]) {
     }
  
     int opt = 1;
-    setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, &opt, sizeof(opt));
+    #ifdef _WIN32
+        setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
+    #else
+        setsockopt(server_fd, SOL_SOCKET, SO_REUSEADDR, (const char*)&opt, sizeof(opt));
+    #endif
  
     struct sockaddr_in srv_addr{};
     srv_addr.sin_family      = AF_INET;
