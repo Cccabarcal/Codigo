@@ -8,8 +8,8 @@ Para cumplir con el requisito de **"resolución de nombres"** sin costos adicion
 
 ## ⚠️ Nota sobre la Configuración Actual
 
-**Ya está configurado y en uso:**
-- El desarrollador ya utiliza **DuckDNS** para su servidor en casa
+**Ya está configurada y en uso:**
+- Por nuestra parte uno de los integrantes ya utiliza **DuckDNS** para su servidor en casa
 - El **token de DuckDNS** está cargado en un **Docker container**
 - El dominio `proyectoiota.duckdns.org` está activo y funcionando
 - La actualización automática de IP se ejecuta en el container Docker
