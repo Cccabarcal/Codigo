@@ -1134,16 +1134,8 @@ grep ERROR server.log
 
 ---
 
-## Licencia
+## estudiantes
 
-Proyecto académico - Universidad
-
----
-
-## Fecha de Entrega
-
-**14 de Abril de 2026**
-
-## Última Actualización
-
-**14 de Abril de 2026**
+David Quintero Gallego
+David Ruíz Vallejo
+Cristian Camilo Cabarcas
