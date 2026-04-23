@@ -140,3 +140,134 @@
 [2026-04-23 07:45:03] [INFO] [energy-01] Registro exitoso
 [2026-04-23 07:45:03] [INFO] [energy-01] Iniciando mediciones cada 5s
 [2026-04-23 07:45:03] [INFO] Todos los sensores iniciados
+[2026-04-23 07:49:53] [INFO] ======================================================================
+[2026-04-23 07:49:53] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:49:53] [INFO] Servidor: 54.204.166.229:8080
+[2026-04-23 07:49:53] [INFO] ======================================================================
+[2026-04-23 07:49:53] [INFO] Creados 6 sensores
+[2026-04-23 07:49:53] [INFO] [temp-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:49:53] [INFO] [temp-01] Registro exitoso
+[2026-04-23 07:49:53] [INFO] [temp-01] Iniciando mediciones cada 5s
+[2026-04-23 07:49:53] [INFO] [temp-02] Conectado a 54.204.166.229:8080
+[2026-04-23 07:49:53] [INFO] [temp-02] Registro exitoso
+[2026-04-23 07:49:53] [INFO] [temp-02] Iniciando mediciones cada 5s
+[2026-04-23 07:49:54] [INFO] [humid-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:49:54] [INFO] [humid-01] Registro exitoso
+[2026-04-23 07:49:54] [INFO] [humid-01] Iniciando mediciones cada 5s
+[2026-04-23 07:49:54] [INFO] [press-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:49:54] [INFO] [press-01] Registro exitoso
+[2026-04-23 07:49:54] [INFO] [press-01] Iniciando mediciones cada 5s
+[2026-04-23 07:49:55] [INFO] [vibra-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:49:55] [INFO] [vibra-01] Registro exitoso
+[2026-04-23 07:49:55] [INFO] [vibra-01] Iniciando mediciones cada 5s
+[2026-04-23 07:49:55] [INFO] [energy-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:49:55] [INFO] [energy-01] Registro exitoso
+[2026-04-23 07:49:55] [INFO] [energy-01] Iniciando mediciones cada 5s
+[2026-04-23 07:49:56] [INFO] Todos los sensores iniciados
+[2026-04-23 07:50:44] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:45] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:45] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:46] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:46] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:49] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:49] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:50] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:50] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:51] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:51] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:54] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:54] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:55] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:55] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:56] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:56] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:59] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:50:59] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:00] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:00] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:01] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:01] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:04] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:04] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:05] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:05] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:06] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:06] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:09] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:09] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:10] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:10] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:11] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:11] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:14] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:14] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:15] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:15] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:16] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:16] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:19] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:19] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:20] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:20] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:21] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:21] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:24] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:24] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:25] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:25] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:26] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:26] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:29] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:29] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:30] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:30] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:31] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:31] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:34] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:34] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:35] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:35] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:36] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:36] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:39] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:39] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:40] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:40] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:41] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:41] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:44] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:44] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:45] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:45] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:46] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:46] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:49] [ERROR] [temp-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:49] [ERROR] [temp-02] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:50] [ERROR] [humid-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:50] [ERROR] [press-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:51] [ERROR] [vibra-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:51:51] [ERROR] [energy-01] Error enviando medición: [WinError 10053] Se ha anulado una conexión establecida por el software en su equipo host
+[2026-04-23 07:52:03] [INFO] ======================================================================
+[2026-04-23 07:52:03] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:52:03] [INFO] Servidor: 54.204.166.229:8080
+[2026-04-23 07:52:03] [INFO] ======================================================================
+[2026-04-23 07:52:03] [INFO] Creados 6 sensores
+[2026-04-23 07:52:03] [INFO] [temp-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:52:03] [INFO] [temp-01] Registro exitoso
+[2026-04-23 07:52:03] [INFO] [temp-01] Iniciando mediciones cada 5s
+[2026-04-23 07:52:04] [INFO] [temp-02] Conectado a 54.204.166.229:8080
+[2026-04-23 07:52:04] [INFO] [temp-02] Registro exitoso
+[2026-04-23 07:52:04] [INFO] [temp-02] Iniciando mediciones cada 5s
+[2026-04-23 07:52:04] [INFO] [humid-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:52:04] [INFO] [humid-01] Registro exitoso
+[2026-04-23 07:52:04] [INFO] [humid-01] Iniciando mediciones cada 5s
+[2026-04-23 07:52:05] [INFO] [press-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:52:05] [INFO] [press-01] Registro exitoso
+[2026-04-23 07:52:05] [INFO] [press-01] Iniciando mediciones cada 5s
+[2026-04-23 07:52:05] [INFO] [vibra-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:52:05] [INFO] [vibra-01] Registro exitoso
+[2026-04-23 07:52:05] [INFO] [vibra-01] Iniciando mediciones cada 5s
+[2026-04-23 07:52:06] [INFO] [energy-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:52:06] [INFO] [energy-01] Registro exitoso
+[2026-04-23 07:52:06] [INFO] [energy-01] Iniciando mediciones cada 5s
+[2026-04-23 07:52:06] [INFO] Todos los sensores iniciados

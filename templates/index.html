@@ -335,6 +335,7 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: 'include',
                 body: JSON.stringify({
                     username: username,
                     password: password
@@ -359,7 +360,9 @@
         }
         
         function loadSensors() {
-            fetch('/sensors')
+            fetch('/sensors', {
+                credentials: 'include'
+            })
             .then(r => r.json())
             .then(data => {
                 const list = document.getElementById('sensorsList');
@@ -398,7 +401,9 @@
             const list = document.getElementById('measurementsList');
             list.innerHTML = '<div class="loading"><div class="spinner"></div> Cargando mediciones...</div>';
             
-            fetch(`/measurements/${sensorId}?count=15`)
+            fetch(`/measurements/${sensorId}?count=15`, {
+                credentials: 'include'
+            })
             .then(r => r.json())
             .then(data => {
                 list.innerHTML = '';
@@ -427,7 +432,10 @@
         }
         
         function doLogout() {
-            fetch('/logout', { method: 'POST' })
+            fetch('/logout', {
+                method: 'POST',
+                credentials: 'include'
+            })
             .then(() => {
                 document.getElementById('dashboard').classList.remove('active');
                 document.getElementById('loginContainer').style.display = 'block';
