@@ -1,0 +1,142 @@
+[2026-04-23 07:31:02] [INFO] ======================================================================
+[2026-04-23 07:31:02] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:31:02] [INFO] Servidor: proyectoiota.duckdns.org:8080
+[2026-04-23 07:31:02] [INFO] ======================================================================
+[2026-04-23 07:31:02] [INFO] Creados 6 sensores
+[2026-04-23 07:31:05] [INFO] Todos los sensores iniciados
+[2026-04-23 07:31:23] [ERROR] [temp-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:31:24] [ERROR] [temp-02] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:31:24] [ERROR] [humid-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:31:25] [ERROR] [press-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:31:25] [ERROR] [vibra-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:31:26] [ERROR] [energy-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:31:51] [INFO] ======================================================================
+[2026-04-23 07:31:51] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:31:51] [INFO] Servidor: 54.204.166.229:8080:8080
+[2026-04-23 07:31:51] [INFO] ======================================================================
+[2026-04-23 07:31:51] [INFO] Creados 6 sensores
+[2026-04-23 07:31:51] [ERROR] [temp-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:31:52] [ERROR] [temp-02] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:31:52] [ERROR] [humid-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:31:53] [ERROR] [press-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:31:53] [ERROR] [vibra-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:31:54] [ERROR] [energy-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:31:54] [INFO] Todos los sensores iniciados
+[2026-04-23 07:32:00] [INFO] ======================================================================
+[2026-04-23 07:32:00] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:32:00] [INFO] Servidor: 54.204.166.229:8080
+[2026-04-23 07:32:00] [INFO] ======================================================================
+[2026-04-23 07:32:00] [INFO] Creados 6 sensores
+[2026-04-23 07:32:03] [INFO] Todos los sensores iniciados
+[2026-04-23 07:32:21] [ERROR] [temp-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:32:21] [ERROR] [temp-02] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:32:22] [ERROR] [humid-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:32:22] [ERROR] [press-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:32:23] [ERROR] [vibra-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:32:23] [ERROR] [energy-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:33:41] [INFO] ======================================================================
+[2026-04-23 07:33:41] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:33:41] [INFO] Servidor: proyectoiota.duckdns.org:8080
+[2026-04-23 07:33:41] [INFO] ======================================================================
+[2026-04-23 07:33:41] [INFO] Creados 6 sensores
+[2026-04-23 07:33:44] [INFO] Todos los sensores iniciados
+[2026-04-23 07:34:02] [ERROR] [temp-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:34:02] [ERROR] [temp-02] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:34:03] [ERROR] [humid-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:34:03] [ERROR] [press-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:34:04] [ERROR] [vibra-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:34:04] [ERROR] [energy-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:34:40] [INFO] ======================================================================
+[2026-04-23 07:34:40] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:34:40] [INFO] Servidor: proyectoiota.duckdns.org:8080
+[2026-04-23 07:34:40] [INFO] ======================================================================
+[2026-04-23 07:34:40] [INFO] Creados 6 sensores
+[2026-04-23 07:34:43] [INFO] Todos los sensores iniciados
+[2026-04-23 07:35:01] [ERROR] [temp-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:35:02] [ERROR] [temp-02] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:35:02] [ERROR] [humid-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:35:03] [ERROR] [press-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:35:03] [ERROR] [vibra-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:35:04] [ERROR] [energy-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:35:52] [INFO] ======================================================================
+[2026-04-23 07:35:52] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:35:52] [INFO] Servidor: proyectoiota.duckdns.org:8080
+[2026-04-23 07:35:52] [INFO] ======================================================================
+[2026-04-23 07:35:52] [INFO] Creados 6 sensores
+[2026-04-23 07:36:13] [ERROR] [temp-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:36:14] [ERROR] [temp-02] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:36:14] [ERROR] [humid-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:36:15] [ERROR] [press-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:36:15] [ERROR] [vibra-01] Error conectando: [WinError 10060] Se produjo un error durante el intento de conexión ya que la parte conectada no respondió adecuadamente tras un periodo de tiempo, o bien se produjo un error en la conexión establecida ya que el host conectado no ha podido responder
+[2026-04-23 07:36:50] [INFO] ======================================================================
+[2026-04-23 07:36:50] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:36:50] [INFO] Servidor: 54.204.166.229:8080:8080
+[2026-04-23 07:36:50] [INFO] ======================================================================
+[2026-04-23 07:36:50] [INFO] Creados 6 sensores
+[2026-04-23 07:36:50] [ERROR] [temp-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:36:50] [ERROR] [temp-02] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:36:51] [ERROR] [humid-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:36:51] [ERROR] [press-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:36:52] [ERROR] [vibra-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:36:52] [ERROR] [energy-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:36:53] [INFO] Todos los sensores iniciados
+[2026-04-23 07:38:02] [INFO] ======================================================================
+[2026-04-23 07:38:02] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:38:02] [INFO] Servidor: 54.204.166.229:8080:8080
+[2026-04-23 07:38:02] [INFO] ======================================================================
+[2026-04-23 07:38:02] [INFO] Creados 6 sensores
+[2026-04-23 07:38:02] [ERROR] [temp-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:38:03] [ERROR] [temp-02] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:38:03] [ERROR] [humid-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:38:04] [ERROR] [press-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:38:04] [ERROR] [vibra-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:38:05] [ERROR] [energy-01] Error conectando: [Errno 11001] getaddrinfo failed
+[2026-04-23 07:38:05] [INFO] Todos los sensores iniciados
+[2026-04-23 07:38:10] [INFO] ======================================================================
+[2026-04-23 07:38:10] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:38:10] [INFO] Servidor: 54.204.166.229:8080
+[2026-04-23 07:38:10] [INFO] ======================================================================
+[2026-04-23 07:38:10] [INFO] Creados 6 sensores
+[2026-04-23 07:38:10] [INFO] [temp-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:38:10] [INFO] [temp-01] Registro exitoso
+[2026-04-23 07:38:10] [INFO] [temp-01] Iniciando mediciones cada 5s
+[2026-04-23 07:38:10] [INFO] [temp-02] Conectado a 54.204.166.229:8080
+[2026-04-23 07:38:10] [INFO] [temp-02] Registro exitoso
+[2026-04-23 07:38:10] [INFO] [temp-02] Iniciando mediciones cada 5s
+[2026-04-23 07:38:11] [INFO] [humid-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:38:11] [INFO] [humid-01] Registro exitoso
+[2026-04-23 07:38:11] [INFO] [humid-01] Iniciando mediciones cada 5s
+[2026-04-23 07:38:11] [INFO] [press-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:38:11] [INFO] [press-01] Registro exitoso
+[2026-04-23 07:38:11] [INFO] [press-01] Iniciando mediciones cada 5s
+[2026-04-23 07:38:12] [INFO] [vibra-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:38:12] [INFO] [vibra-01] Registro exitoso
+[2026-04-23 07:38:12] [INFO] [vibra-01] Iniciando mediciones cada 5s
+[2026-04-23 07:38:12] [INFO] [energy-01] Conectado a 54.204.166.229:8080
+[2026-04-23 07:38:12] [INFO] [energy-01] Registro exitoso
+[2026-04-23 07:38:12] [INFO] [energy-01] Iniciando mediciones cada 5s
+[2026-04-23 07:38:13] [INFO] Todos los sensores iniciados
+[2026-04-23 07:45:00] [INFO] ======================================================================
+[2026-04-23 07:45:00] [INFO] Cliente Sensor IoT iniciando
+[2026-04-23 07:45:00] [INFO] Servidor: proyectoiota.duckdns.org:8080
+[2026-04-23 07:45:00] [INFO] ======================================================================
+[2026-04-23 07:45:00] [INFO] Creados 6 sensores
+[2026-04-23 07:45:00] [INFO] [temp-01] Conectado a proyectoiota.duckdns.org:8080
+[2026-04-23 07:45:00] [INFO] [temp-01] Registro exitoso
+[2026-04-23 07:45:00] [INFO] [temp-01] Iniciando mediciones cada 5s
+[2026-04-23 07:45:01] [INFO] [temp-02] Conectado a proyectoiota.duckdns.org:8080
+[2026-04-23 07:45:01] [INFO] [temp-02] Registro exitoso
+[2026-04-23 07:45:01] [INFO] [temp-02] Iniciando mediciones cada 5s
+[2026-04-23 07:45:01] [INFO] [humid-01] Conectado a proyectoiota.duckdns.org:8080
+[2026-04-23 07:45:01] [INFO] [humid-01] Registro exitoso
+[2026-04-23 07:45:01] [INFO] [humid-01] Iniciando mediciones cada 5s
+[2026-04-23 07:45:02] [INFO] [press-01] Conectado a proyectoiota.duckdns.org:8080
+[2026-04-23 07:45:02] [INFO] [press-01] Registro exitoso
+[2026-04-23 07:45:02] [INFO] [press-01] Iniciando mediciones cada 5s
+[2026-04-23 07:45:02] [INFO] [vibra-01] Conectado a proyectoiota.duckdns.org:8080
+[2026-04-23 07:45:02] [INFO] [vibra-01] Registro exitoso
+[2026-04-23 07:45:02] [INFO] [vibra-01] Iniciando mediciones cada 5s
+[2026-04-23 07:45:03] [INFO] [energy-01] Conectado a proyectoiota.duckdns.org:8080
+[2026-04-23 07:45:03] [INFO] [energy-01] Registro exitoso
+[2026-04-23 07:45:03] [INFO] [energy-01] Iniciando mediciones cada 5s
+[2026-04-23 07:45:03] [INFO] Todos los sensores iniciados

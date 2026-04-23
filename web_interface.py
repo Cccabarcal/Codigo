@@ -158,8 +158,9 @@ def login():
         client.logout()
         return jsonify({'success': False, 'message': 'Credenciales inválidas'}), 401
     
-    # Guardar sesión
+    # Guardar sesión (incluyendo contraseña para re-autenticaciones)
     session['username'] = username
+    session['password'] = password
     session['logged_in'] = True
     logger.info(f"Login exitoso: {username}")
     
@@ -172,12 +173,13 @@ def get_sensors():
         return jsonify({'success': False, 'message': 'No autenticado'}), 401
     
     username = session.get('username')
+    password = session.get('password')
     
     client = IotClient()
     if not client.connect():
         return jsonify({'success': False, 'message': 'No se pudo conectar al servidor IoT'}), 500
     
-    if not client.login(username, "password123"):  # ⚠️ En producción, obtener de sesión segura
+    if not client.login(username, password):
         client.logout()
         return jsonify({'success': False, 'message': 'Error de autenticación'}), 401
     
@@ -197,14 +199,14 @@ def get_measurement(sensor_id):
         return jsonify({'success': False, 'message': 'No autenticado'}), 401
     
     username = session.get('username')
+    password = session.get('password')
     count = request.args.get('count', 10, type=int)
     
     client = IotClient()
     if not client.connect():
         return jsonify({'success': False, 'message': 'No se pudo conectar al servidor IoT'}), 500
     
-    # ⚠️ En producción, obtener contraseña de forma segura
-    if not client.login(username, "password123"):
+    if not client.login(username, password):
         client.logout()
         return jsonify({'success': False, 'message': 'Error de autenticación'}), 401
     
